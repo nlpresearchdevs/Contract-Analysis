@@ -1,0 +1,60 @@
+{% extends "personal/header.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+        th, td {
+          padding: 5px;
+          text-align: left;
+        }
+        </style>
+</head>
+<body>
+<div class="main">
+<div class="floatleft">
+    <h3>Test:</h3>
+    <form method ="post" action="{% url 'dataset' %}" enctype="multipart/form-data" >
+            {%csrf_token%}
+            {{form.as_p}}
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+
+
+
+    <table style="width:100%">
+        <caption>Contract</caption>
+        <tr>
+          <th>Filename</th>
+          <th>Status</th>
+        </tr>
+        {% for documents in Pos %}
+        <tr>
+        
+          <td>{{documents.document.name}}</td>
+          <td></td>
+         
+        </tr>
+        {% endfor %}
+      </table>
+   
+       
+        
+        
+
+
+
+
+
+</div>
+</body>
+</html>
+
+{% endblock %}
+
+

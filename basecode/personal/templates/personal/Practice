@@ -1,0 +1,48 @@
+<!-- {% extends "personal/header.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+</style>
+</head>
+<body>
+<div class="main">
+<div class="floatleft">
+    <h3>Test:</h3>
+    <form method ="post" action="{% url 'dataset' %}" enctype="multipart/form-data" >
+            {%csrf_token%}
+            {{form.as_p}}
+            <button type="submit">Test</button>
+        </form>
+    </div>
+
+
+
+{% for documents in Pos %}
+<div class="responsive">
+  <div class="gallery">
+    <a target="_blank" href="img_5terre.jpg">
+      <img src="{{documents.document.url}}" alt=" " width="50px" height="50px">
+    </a>
+    <div class="desc">Category: {{documents.resWatsonClase}}</div>
+    <div class="desc">Score: {{documents.resWatsonScore}}</div>
+     <center>
+            <a href="% url 'personal:move' documents.pk %">move</a> 
+           </center> 
+  </div>
+</div>
+{% endfor %}
+
+
+<div class="clearfix"></div>
+
+
+</div>
+</body>
+</html>
+
+{% endblock %} -->
+
+

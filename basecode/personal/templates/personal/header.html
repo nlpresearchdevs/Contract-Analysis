@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	{% load staticfiles %}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+</style>
+</head>
+
+<body >
+ 
+                     
+                          <div class="w3-sidebar w3-bar-block w3-black w3-xxlarge" style="width:70px">
+                            <a href="http://localhost:8000/" class="w3-bar-item w3-button"><i class="fa fa-home"></i></a> 
+                            <a href="#" class="w3-bar-item w3-button"><i class="fa fa-server"></i></a> 
+                            <a href="#" class="w3-bar-item w3-button"><i class="fa fa-edit"></i></a> 
+                            <a href="#" class="w3-bar-item w3-button"><i class="fa fa-copy"></i></a>
+                            <a href="#" class="w3-bar-item w3-button"><i class="fa fa-upload"></i></a> 
+                          </div>
+                          
+                          <div style="margin-left:70px">
+                          
+                          <div class="w3-container">
+                            {% block content %}
+                            {% endblock %}	
+                          </div>
+                          
+                          </div>
+
+ 
+	
+</body>
+
+</html>

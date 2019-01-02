@@ -1,0 +1,24 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'analyzer/style.css' %}">
+{% block content %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <h3 class="title">File Contract Analysis</h3>
+  </head>
+  <body>
+    <div>
+      <form class="form" method ="post" action="{% url 'analyzer:upload_file' %}" enctype="multipart/form-data" >
+        {%csrf_token%}
+        {{form.as_p}}
+        <button type="submit">Upload</button>
+      </form>
+      {% if keywords %}
+        <p class="results">{{ keywords }}</p>
+      {% endif %}
+  </div>
+  </body>
+</html>
+{% endblock %}
+
+

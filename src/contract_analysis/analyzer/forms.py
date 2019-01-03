@@ -7,3 +7,6 @@ class ContractForm(forms.ModelForm):
     class Meta:
         model = Contract
         fields = ('document',)
+        widgets = {
+            'document': forms.ClearableFileInput(attrs={'class': 'btn-form-upload'}),
+        }

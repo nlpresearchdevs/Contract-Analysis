@@ -26,15 +26,17 @@ def upload_file(request):
     if request.method == 'POST':
         form = ContractForm(request.POST, request.FILES)
         if form.is_valid():
-            # file is saved
             fileName = request.FILES['document'].name
             filePath = os.path.join('media/analyzer/contracts/', fileName)
-            fileNameOnly, fileExt = os.path.splitext('media/analyzer/contracts/' + fileName)
+            fileNoExt, fileExt = os.path.splitext('media/analyzer/contracts/' + fileName)
+            
+            # save file if does not exist
             if not os.path.exists(filePath):
                 form.save()
             
             # return HttpResponseRedirect('analyzer/success.html')
-            fileNameOnly = fileNameOnly.replace('media/analyzer/contracts/','')
+            # file name without extension
+            fileNoExt = fileNoExt.replace('media/analyzer/contracts/','')
             pdfFileObj  = open('media/analyzer/contracts/' + fileName, 'rb')
             pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
 
@@ -47,8 +49,8 @@ def upload_file(request):
                 text=text,
                 features=Features(
                     entities=EntitiesOptions(emotion=True, sentiment=True),
-                    keywords=KeywordsOptions(emotion=True, sentiment=True)
-                    # keywords=KeywordsOptions()
+                    keywords=KeywordsOptions(emotion=True, sentiment=True),
+                    # categories=CategoriesOptions();
                 )
             ).get_result()
             keywords = json.dumps(response, indent=2)
@@ -61,18 +63,34 @@ def upload_file(request):
             pdfFileObj.close()
             print(keywords)
 
-            keywordsPath = "media/analyzer/keywords/" + fileNameOnly + ".csv"
+            keywordsPath = "media/analyzer/keywords/" + fileNoExt + ".csv"
             result = ''
             
             with open(keywordsPath, "w") as file:
-                for keyword in response['keywords']: 
-                    result += "keyword: " + keyword['text'] + \
-                                "\n\trelevance: " + str(keyword['relevance']) + \
-                                "\n\tcount: " + str(keyword['count']) + "\n\n\n"
-                    print(keyword)
-                    writeCSV = keyword['text'] + ", " +  str(keyword['count']) + ", " + str(keyword['relevance']) + "\n"
-                    file.write(writeCSV)
+                try:
+                    for keyword in response['keywords']:
+                        keyword_text = keyword['text']
+                        keyword_count =  str(keyword['count'])
+                        keyword_emotion = max(keyword['emotion'], key=lambda k: keyword['emotion'][k])
+                        keyword_relevance = str(keyword['relevance'])
+                        keyword_sentiment = keyword['sentiment']['label']
+                        result += "keyword: " +  keyword_text + \
+                                    "\ncount: " + keyword_count + \
+                                    "\nemotion: " + keyword_emotion + \
+                                    "\nrelevance: " + keyword_relevance + \
+                                    "\nsentiment: " + keyword_sentiment + "\n\n\n"
+                        # print(keyword)
+                        writeCSV = keyword_text + "," + keyword_count + "," + keyword_emotion + "," +  keyword_relevance + "," +  keyword_sentiment + "\n" 
+                        file.write(writeCSV)
+                except:
+                    result = "Invalid PDF file. Please upload another PDF file."
             # return HttpResponseRedirect(reverse('analyzer:index', args=(form, keywords)))
+
+            # save csv to db reswatsonkeywords column
+            watsonRes = Contract()
+            watsonRes.resWatsonKeywords.name = keywordsPath
+            watsonRes.save()
+
             return render(request, 'analyzer/index.html', {'form':form, 'keywords':result})
     else:
         form = ContractForm()

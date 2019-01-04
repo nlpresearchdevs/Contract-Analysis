@@ -15,8 +15,8 @@
     <body>
         <div class="header">
             <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
-                <a class="pure-menu-heading" href="">
-                    <img class="logo" src="{% static 'analyzer/img/asi-logo-light.png' %}" alt="Contract Analysis">            
+                <a class="pure-menu-heading" href="{% url 'analyzer:index'%}">
+                    <img class="logo" src="{% static 'analyzer/img/asi-logo-light.png' %}" alt="Contract Analysis">
                 </a>
 
                 <ul class="pure-menu-list">
@@ -31,7 +31,7 @@
             <div class="splash">
                 <h1 class="splash-head">Contract Analysis</h1>
                 <p class="splash-subhead">
-                    Analyze and identify vulnerabilities within your contracts
+                    Analyze and identify vulnerabilities in your contracts
                 </p>
                 <p>
                 <br>
@@ -57,7 +57,7 @@
                             <p style="white-space: pre; text-align: center;">{{ keywords }}</p>
                         </div>
                     </div>
-                    {% endif %}
+                {% endif %}
             </div>
         <!-- </div> -->
                 <!--  <div class="pure-g">

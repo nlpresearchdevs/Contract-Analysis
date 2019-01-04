@@ -1,50 +1,50 @@
-Principal wishes, 1, 0.810868
-Termination ConsequencesOn termination of the Selling Rights, 1, 0.763424
-behalf of the Principal, 2, 0.668275
-COMMISSION SALES, 2, 0.662727
-best efforts, 2, 0.605524
-Agent, 18, 0.601222
-RightsThe Principal, 1, 0.595441
-exclusive right, 1, 0.592819
-product, 11, 0.557803
-Summary Termination, 1, 0.546153
-head office, 1, 0.546019
-term of this agreement, 1, 0.53618
-sales taxes, 1, 0.536139
-good reason, 1, 0.535899
-exclusive of any sales taxes of each order, 1, 0.530537
-Fiduciary RelationshipThe Agent, 1, 0.529661
-expenses incurredin connection, 1, 0.529422
-agreement, 5, 0.528505
-orders, 3, 0.523768
-Principal, 10, 0.52019
-obligations underthis agreement, 1, 0.515795
-main address, 1, 0.515152
-request, 1, 0.514904
-benefit of this agreement, 1, 0.512175
-ordinary fiduciary duties, 1, 0.511984
-Schedule, 1, 0.511408
-COMMISSION SALES AGREEMENTThis Commission Sales Agreement, 1, 0.511122
-reason, 1, 0.511042
-request of the Agent, 1, 0.510998
-consent, 1, 0.510706
-price, 2, 0.510645
-territory, 2, 0.510613
-buyers, 2, 0.510342
-compensation, 1, 0.50866
-services, 1, 0.508523
-efforts, 1, 0.508184
-Rights, 1, 0.50786
-behalf, 1, 0.507752
-proper use, 1, 0.50757
-laws of New, 1, 0.507398
-addition, 1, 0.507147
-partial refund, 1, 0.50683
-notice, 1, 0.506713
-accordance, 1, 0.506556
-period, 1, 0.506454
-CommissionThe Principal, 1, 0.506191
-return of Product, 1, 0.506134
-attempt, 1, 0.50574
-report, 1, 0.505653
-part of each order of Product, 1, 0.505165
+Principal wishes,1,joy,0.810868,positive
+Termination ConsequencesOn termination of the Selling Rights,1,joy,0.763424,negative
+behalf of the Principal,2,joy,0.668275,positive
+COMMISSION SALES,2,joy,0.662727,positive
+best efforts,2,joy,0.605524,positive
+Agent,18,joy,0.601222,positive
+RightsThe Principal,1,joy,0.595441,positive
+exclusive right,1,joy,0.592819,positive
+product,11,joy,0.557803,positive
+Summary Termination,1,joy,0.546153,negative
+head office,1,joy,0.546019,positive
+term of this agreement,1,joy,0.53618,negative
+sales taxes,1,joy,0.536139,positive
+good reason,1,joy,0.535899,negative
+exclusive of any sales taxes of each order,1,joy,0.530537,positive
+Fiduciary RelationshipThe Agent,1,joy,0.529661,negative
+expenses incurredin connection,1,joy,0.529422,positive
+agreement,5,joy,0.528505,positive
+orders,3,joy,0.523768,positive
+Principal,10,joy,0.52019,positive
+obligations underthis agreement,1,joy,0.515795,negative
+main address,1,joy,0.515152,positive
+request,1,joy,0.514904,positive
+benefit of this agreement,1,joy,0.512175,negative
+ordinary fiduciary duties,1,joy,0.511984,negative
+Schedule,1,joy,0.511408,positive
+COMMISSION SALES AGREEMENTThis Commission Sales Agreement,1,joy,0.511122,positive
+reason,1,joy,0.511042,negative
+request of the Agent,1,joy,0.510998,positive
+consent,1,joy,0.510706,negative
+price,2,joy,0.510645,positive
+territory,2,joy,0.510613,positive
+buyers,2,joy,0.510342,positive
+compensation,1,joy,0.50866,positive
+services,1,joy,0.508523,positive
+efforts,1,joy,0.508184,positive
+Rights,1,joy,0.50786,negative
+behalf,1,joy,0.507752,positive
+proper use,1,joy,0.50757,positive
+laws of New,1,joy,0.507398,positive
+addition,1,joy,0.507147,negative
+partial refund,1,joy,0.50683,positive
+notice,1,joy,0.506713,negative
+accordance,1,joy,0.506556,positive
+period,1,joy,0.506454,positive
+CommissionThe Principal,1,joy,0.506191,positive
+return of Product,1,joy,0.506134,positive
+attempt,1,joy,0.50574,positive
+report,1,joy,0.505653,positive
+part of each order of Product,1,joy,0.505165,positive

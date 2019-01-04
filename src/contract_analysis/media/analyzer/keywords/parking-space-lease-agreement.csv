@@ -1,0 +1,50 @@
+PARKING SPACE LEASE,2,joy,0.825309,positive
+COM of 12PARKING SPACE LEASE AGREEMENT,1,joy,0.688399,positive
+such parking space,1,joy,0.669746,positive
+parking space,3,joy,0.63056,positive
+s vehicle,2,sadness,0.614169,negative
+Lessee,17,joy,0.608035,negative
+parking lot,1,sadness,0.60433,negative
+parking lot attendants,1,sadness,0.5848,positive
+Street Address,1,joy,0.579722,positive
+aforementioned location,1,sadness,0.570148,positive
+Lessor,11,joy,0.565481,negative
+such damage,1,sadness,0.563282,negative
+Parking Space Lease Agreement,1,sadness,0.551598,positive
+use of such attendant,1,sadness,0.536984,negative
+parking facilities,1,sadness,0.5328,negative
+damage,2,sadness,0.532232,negative
+Vehicle,3,sadness,0.53144,negative
+remote garage door openers,1,anger,0.528705,neutral
+such attendants,1,sadness,0.527301,negative
+party,4,joy,0.525748,positive
+receipt,1,joy,0.524158,neutral
+loss,3,sadness,0.523499,negative
+aforementioned parking space,1,sadness,0.521371,neutral
+Payments,1,sadness,0.521226,neutral
+Loss of Equipment,1,sadness,0.517175,negative
+Lot Attendants,1,sadness,0.51626,positive
+terms,2,sadness,0.513795,positive
+conditions,2,sadness,0.513577,positive
+s request,1,sadness,0.513232,negative
+days,1,joy,0.512934,neutral
+Receipts,1,joy,0.512086,neutral
+payment,1,sadness,0.510618,neutral
+lease,1,sadness,0.509179,neutral
+advance,1,joy,0.509037,neutral
+direction,1,sadness,0.508174,negative
+amount,1,joy,0.507843,neutral
+event,1,sadness,0.507644,positive
+person,1,sadness,0.507435,negative
+items,1,sadness,0.507373,neutral
+number,1,joy,0.506972,neutral
+Agreement,2,sadness,0.506965,positive
+City,1,joy,0.506938,positive
+State,1,joy,0.506503,positive
+day,1,joy,0.506468,neutral
+equipment,1,anger,0.506352,neutral
+COM,1,joy,0.505875,neutral
+parking,1,joy,0.505657,neutral
+parties,1,anger,0.505154,neutral
+possessions orItems,1,sadness,0.504542,negative
+first of each month,1,joy,0.5026,neutral

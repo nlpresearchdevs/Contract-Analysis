@@ -9,8 +9,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="A layout example that shows off a responsive product landing page.">
         <title>Contract Analysis</title>
+        
+        <!-- pure.css -->
         <link rel="shortcut icon" type="image/png" href="{% static 'analyzer/img/favicon.ico' %}"/>
         <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+        
+        <!-- bootstrap -->
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+        <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+        <!-- <script src="{% static 'analyzer/js/scripts.js' %}"></script> -->
+
     </head>
     <body>
         <div class="header">
@@ -39,7 +48,7 @@
                         {%csrf_token%}
                         {{form.as_p}}
                         <br><br>
-                        <button class="pure-button" type="submit" style=" color: #1f8dd6; background-color: white; border-radius: 4px; border-radius: 5px; font-size: 120%;">Submit</button>
+                        <button class="pure-button" type="submit" style=" color: #1f8dd6; background-color: white; border-radius: 4px; border-radius: 5px; font-size: 120%;">Upload and Continue</button>
                         <br>
                     </form>
                 </p>
@@ -48,7 +57,7 @@
 
         <div class="content-wrapper">
             <div class="content">
-                {% if keywords %}
+                <!-- {% if keywords%}
                     <h2 class="content-head is-center">
                         Results
                     </h2>
@@ -58,6 +67,35 @@
                         </div>
                     </div>
                 {% endif %}
+                {% if categories %}
+                    <h2 class="content-head is-center">
+                        Results
+                    </h2>
+                    <div class="pure-g">
+                        <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+                            <p style="white-space: pre; text-align: center;">{{ categories }}</p>
+                        </div>
+                    </div>
+                {% endif %} -->
+
+                <!-- {% if pdfToHTML %}
+                    {{ pdfToHTML | safe }}
+                {% endif %} -->
+                
+                {% if contents %}
+                    {% for content in contents %}
+                        <span>
+                            <div class="highlight-sentence tooltip">{{ content }}
+                            <!-- <div class="highlight-sentence tooltip" data-toggle="tooltip" title="Suggestions">{{ content }} -->
+                                <span class="tooltiptext">Suggestions</span>
+                            </div>
+                            <br>
+                            <br>
+                        </span>
+                        <!-- <p class="highlight-sentence">{{ content }}</p> -->
+                    {% endfor %}
+                {% endif %}
+                
             </div>
         <!-- </div> -->
                 <!--  <div class="pure-g">

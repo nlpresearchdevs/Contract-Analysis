@@ -82,20 +82,25 @@
                     {{ pdfToHTML | safe }}
                 {% endif %} -->
                 
-                {% if contents %}
-                    {% for content in contents %}
+                {% if contractElements %}
+                    {% for text, nature, party, category in contractElements %}
                         <span>
-                            <div class="highlight-sentence tooltip">{{ content }}
-                            <!-- <div class="highlight-sentence tooltip" data-toggle="tooltip" title="Suggestions">{{ content }} -->
-                                <span class="tooltiptext">Suggestions</span>
-                            </div>
-                            <br>
-                            <br>
+                            <!-- <div class="highlight-sentence tooltip">{{ content }} -->
+                                <a href="javascript:void(0)" data-html="true" data-tooltip='Nature: {{nature}} Party: {{party}} Category: {{category}}' class="click">{{ text }}</a>
+                                <!-- <span class="tooltiptext">Suggestions</span> -->
+                            <!-- </div> -->
                         </span>
+                        <br>
+                        <br>
+
+                        <!-- <div>
+                            <a href="javascript:void(0)" tooltips="Suggestions" class="click">{{ content }}</a>
+                        </div>
+                            <br>
+                            <br> -->
                         <!-- <p class="highlight-sentence">{{ content }}</p> -->
                     {% endfor %}
                 {% endif %}
-                
             </div>
         <!-- </div> -->
                 <!--  <div class="pure-g">

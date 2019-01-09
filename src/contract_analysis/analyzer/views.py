@@ -10,6 +10,7 @@ import traceback
 # from django.conf import settings
 import PyPDF2, json, os
 import pandas as pd
+import csv
 # Create your views here.
 
 natural_language_understanding = NaturalLanguageUnderstandingV1(
@@ -20,7 +21,7 @@ natural_language_understanding = NaturalLanguageUnderstandingV1(
 
 compare_and_comply = CompareComplyV1(
     version=str(date.today()),
-    iam_apikey='TBx99hW0kk7pfDsP1Ru9aKOW-fFlsWVwdHzD4pXU_fT0',
+    iam_apikey='NdZOJZ_hjXEIucLj0kcLLtCWx7_8bfgDjoFC_xl_JzHV',
     url='https://gateway.watsonplatform.net/compare-comply/api'
 )
 
@@ -94,25 +95,50 @@ def upload_file(request):
 
             # print(pdfToHTML)
 
+            # with open(contractElementsPath, "r", encoding="utf-8-sig") as file:
+            #     try:
+            #         contents = []
+            #         for line in file:
+            #             contents.append(line)
+            #         # for element in complyRes['elements']:
+            #         #     element_text = element['text']
+            #         #     elementList.append(element_text)
+            #         #     writeCSV = element_text + "\n"
+            #         #     file.write(writeCSV)
+            #     except:
+            #         traceback.print_exc()
+            #         result = "An error occurred. Please try again."
+            
+            element_text = []
+            element_nature = []
+            element_party = []
+            element_category = []
 
+            contractElementsLine = []
+            
             with open(contractElementsPath, "r", encoding="utf-8-sig") as file:
                 try:
-                    contents = []
-                    for line in file:
-                        contents.append(line)
-                    # for element in complyRes['elements']:
-                    #     element_text = element['text']
-                    #     elementList.append(element_text)
-                    #     writeCSV = element_text + "\n"
-                    #     file.write(writeCSV)
+                    contractElementsLine = []
+
+                    reader = csv.reader(file, delimiter=",")
+                    for line in enumerate(reader):
+                        contractElementsLine.append(line)
+
+                    for i, line in contractElementsLine:
+                        print(line)
+                        element_text.append(line[0])
+                        if(line[1] == ''):
+                            line[1] = 'None'
+                        if(line[2] == ''):
+                            line[2] = 'None'
+                        if(line[3] == ''):
+                            line[3] = 'None'
+                        element_nature.append(line[1])
+                        element_party.append(line[2])
+                        element_category.append(line[3])
                 except:
                     traceback.print_exc()
                     result = "An error occurred. Please try again."
-            
-
-
-
-
 
             pdfFileObj.close()
             watsonRes = Contract()
@@ -138,8 +164,8 @@ def upload_file(request):
                             'relations':relations,
                             'semanticRoles':semanticRoles,
                             'sentiments':sentiments,
-                            'contents':contents,
-                            
+                            'contractElements' : zip(element_text, element_nature, element_party, element_category)
+                            # 'contents':contents,
                             # 'pdfToHTML': pdfToHTML,
                             # 'contractElements' : contractElements
                         }
@@ -368,10 +394,22 @@ def exportElements(contractElementsPath, complyRes = []):
             for element in complyRes['elements']:
                 element_text = element['text']
                 elementList.append(element_text)
-                writeCSV = element_text + "\n"
+
+                element_nature = ''
+                element_party = ''
+                element_category_label = ''
+                
+                for element_type in element['types']:
+                    element_nature = element_type['label']['nature']
+                    element_party = element_type['label']['party']
+                
+                for element_category in element['categories']:
+                    element_category_label = element_category['label']
+                
+                writeCSV = '"' + element_text + '",' + element_nature + ',' + element_party + ',' + '"' + element_category_label + '"' + '\n'
                 file.write(writeCSV)
         except:
             traceback.print_exc()
             result = "An error occurred. Please try again."
-    print(elementList)
+    # print(elementList)
     return elementList

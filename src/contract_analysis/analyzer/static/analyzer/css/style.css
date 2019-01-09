@@ -1,7 +1,9 @@
 * {
     -webkit-box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    text-rendering: optimizeLegibility;
 }
 
 .btn-form-upload {
@@ -10,18 +12,13 @@
     border-radius: 5px;
     font-size: 120%;
 }
-
-/* bbox:hover {
-    background: #7f8c8d;
-} */
-
+/* 
 .tooltip {
     position: relative;
     display: inline-block;
-    /* border-bottom: 1px dotted black; */
-  }
+}
   
-  .tooltip .tooltiptext {
+.tooltip .tooltiptext {
     visibility: hidden;
     width: 120px;
     background-color: black;
@@ -29,19 +26,53 @@
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-  
-    /* Position the tooltip */
+
     position: absolute;
     z-index: 1;
-  }
+}
   
-  .tooltip:active .tooltiptext {
+.tooltip:active .tooltiptext {
     visibility: visible;
-  }
+}
 
 .highlight-sentence:active {
     color: black;
     background: rgb(240, 240, 240);
+} */
+
+
+.click {
+    display: block;
+    width: 60%;
+    border-radius: 6px;
+    /* padding: 5px 0; */
+    text-decoration:none;
+    color: black;
+    background: white;
+    position: absolute;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    z-index: 1;
+}
+
+.click:hover {
+    background: rgb(240, 240, 240);
+    border-color:#1f8dd6;
+    border-width: 5px;
+}
+
+.click:focus:after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 102%;
+    top: 0%;
+    display: block;
+    font-size: 16px;
+    color: #fff;
+    background: #333;
+    padding: 4px 10px;
+    margin-bottom: 1%;
+    border-radius: 5px;
 }
 
 /*

@@ -40,12 +40,12 @@
     background: rgb(240, 240, 240);
 } */
 
-
+/* 
 .click {
     display: block;
     width: 60%;
     border-radius: 6px;
-    /* padding: 5px 0; */
+    padding: 5px 0;
     text-decoration:none;
     color: black;
     background: white;
@@ -53,14 +53,38 @@
     padding-top: 25px;
     padding-bottom: 25px;
     z-index: 1;
+} */
+
+.docu-wrapper {
+    width: 60%;
+    margin: 0px auto;
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 .click:hover {
     background: rgb(240, 240, 240);
-    border-color:#1f8dd6;
-    border-width: 5px;
+    /* border-color:#1f8dd6; */
+    /* border-width: 5px; */
 }
 
+.click:active {
+    background: rgb(223, 222, 222);
+    /* border-color:#1f8dd6; */
+    /* border-width: 5px; */
+}
+
+.click:focus {
+    background: rgb(223, 222, 222);
+    outline-style: solid;
+    outline-width: 2px;
+    outline-color: #1f8dd6;
+    outline-offset: 2px;
+    /* border-color:#1f8dd6; */
+    /* border-width: 5px; */
+}
+
+/* 
 .click:focus:after {
     content: attr(data-tooltip);
     position: absolute;
@@ -73,7 +97,8 @@
     padding: 4px 10px;
     margin-bottom: 1%;
     border-radius: 5px;
-}
+} */
+
 
 /*
  * -- BASE STYLES --

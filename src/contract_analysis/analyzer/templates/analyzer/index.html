@@ -10,15 +10,18 @@
         <meta name="description" content="A layout example that shows off a responsive product landing page.">
         <title>Contract Analysis</title>
         
+        <!-- bootstrap -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>        
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"/>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="{% static 'analyzer/js/scripts.js' %}"></script>
+
+        <!-- fontawsome -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
         <!-- pure.css -->
         <link rel="shortcut icon" type="image/png" href="{% static 'analyzer/img/favicon.ico' %}"/>
         <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
-        
-        <!-- bootstrap -->
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
-        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
-        <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
-        <!-- <script src="{% static 'analyzer/js/scripts.js' %}"></script> -->
 
     </head>
     <body>
@@ -44,13 +47,15 @@
                 </p>
                 <p>
                 <br>
-                    <form action="{% url 'analyzer:upload_file' %}" class="form" method ="post" enctype="multipart/form-data" style="color: white">
+                <div style="width: 60%; margin: 0px auto;">
+                    <form action="{% url 'analyzer:upload_file' %}" class="pure-form is-center" method ="post" enctype="multipart/form-data" style="color: white; font-size: 110%;">
                         {%csrf_token%}
                         {{form.as_p}}
-                        <br><br>
-                        <button class="pure-button" type="submit" style=" color: #1f8dd6; background-color: white; border-radius: 4px; border-radius: 5px; font-size: 120%;">Upload and Continue</button>
+                        <br>
+                        <button class="pure-button" type="submit" style=" color: #1f8dd6; background-color: white; border-radius: 4px; border-radius: 5px; font-size: 110%;">Upload and Continue</button>
                         <br>
                     </form>
+                </div>
                 </p>
             </div>
         </div>
@@ -84,13 +89,32 @@
                 
                 {% if contractElements %}
                     {% for text, nature, party, category in contractElements %}
-                        <span>
+                        <!-- <span> -->
                             <!-- <div class="highlight-sentence tooltip">{{ content }} -->
-                                <a href="javascript:void(0)" data-html="true" data-tooltip='Nature: {{nature}} Party: {{party}} Category: {{category}}' class="click">{{ text }}</a>
+                                
+                                <!-- <a href="javascript:void(0)" data-html="true" data-tooltip='Nature: {{nature}} Party: {{party}} Category: {{category}}' class="click">{{ text }}</a> -->
+                                
+                                <!-- <a id="demo" href="javascript:void(0)" tabindex="0" class="" data-html='true' data-toggle="popover" data-trigger="focus" title="" data-content='Nature: {{nature}} Party: {{party}} Category: {{category}}'>{{ text }}</a> -->
+                                
+                                <div class="docu-wrapper">
+                                    <a class="click" style="color: black; text-decoration: none;" data-placement="right" data-toggle="popover" data-animation="false" data-container="body" data-placement="left" type="button" href="javascript:void(0)">
+                                        {{ text }}
+                                    </a>
+                                    <div id="popover-content" class="hide">
+                                        <p><b>Nature:</b> {{nature}}</p>
+                                        <p><b>Party:</b> {{party}}</p>
+                                        <p><b>Category:</b> {{category}}</p>
+                                        <a href="javascript:void(0)" style="text-decoration: underline;">
+                                            <i class="fa fa-edit" aria-hidden="true"></i>
+                                            Suggest Changes
+                                        </a>
+                                    </div>
+                                </div>
+
                                 <!-- <span class="tooltiptext">Suggestions</span> -->
                             <!-- </div> -->
-                        </span>
-                        <br>
+                        <!-- </span> -->
+                        <!-- <br> -->
                         <br>
 
                         <!-- <div>

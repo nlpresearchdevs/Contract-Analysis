@@ -125,7 +125,7 @@ def upload_file(request):
                         contractElementsLine.append(line)
 
                     for i, line in contractElementsLine:
-                        print(line)
+                        # print(line)
                         element_text.append(line[0])
                         if(line[1] == ''):
                             line[1] = 'None'
@@ -136,6 +136,7 @@ def upload_file(request):
                         element_nature.append(line[1])
                         element_party.append(line[2])
                         element_category.append(line[3])
+                        print(line[1] + ", " + line[2] + ", " + line[3])
                 except:
                     traceback.print_exc()
                     result = "An error occurred. Please try again."

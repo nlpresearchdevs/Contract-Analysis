@@ -59,7 +59,7 @@
     width: 60%;
     margin: 0px auto;
     text-align: justify;
-    text-justify: inter-word;
+    /* text-justify: inter-word; */
 }
 
 .click:hover {

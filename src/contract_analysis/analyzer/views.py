@@ -78,6 +78,14 @@ def upload_file(request):
             sentimentsPath = "media/analyzer/results/sentiments/" + fileNoExt + ".csv"
             contractElementsPath = "media/analyzer/results/contractElements/" + fileNoExt + ".csv"
 
+            if not os.path.exists(contractElementsPath):
+                complyRes = compare_and_comply.classify_elements(file=userFile, model_id='contracts', file_content_type='application/pdf', filename=fileNoExt).get_result()
+                contractElements = exportElements(contractElementsPath, complyRes)
+                print('\nContractElements for this file does not exist. Begin extraction.\n\n')
+            else:
+                print('\nContractElements for this file exists. API call halted.\n\n')
+
+
             # complyRes = compare_and_comply.classify_elements(file=userFile, model_id='contracts', file_content_type='application/pdf', filename=fileNoExt).get_result()
             
             categories = exportCategories(categoriesPath, response)
@@ -110,8 +118,9 @@ def upload_file(request):
             #         result = "An error occurred. Please try again."
             
             element_text = []
-            element_nature = []
-            element_party = []
+            # element_nature = []
+            # element_party = []
+            element_nature_party = []
             element_category = []
 
             contractElementsLine = []
@@ -131,12 +140,17 @@ def upload_file(request):
                             line[1] = 'None'
                         if(line[2] == ''):
                             line[2] = 'None'
-                        if(line[3] == ''):
-                            line[3] = 'None'
-                        element_nature.append(line[1])
-                        element_party.append(line[2])
-                        element_category.append(line[3])
-                        print(line[1] + ", " + line[2] + ", " + line[3])
+                        # if(line[3] == ''):
+                        #     line[3] = 'None'
+                        # element_nature.append(line[1])
+                        # element_party.append(line[2])
+                        element_nature_party.append(line[1])
+                        # element_category.append(line[3])
+                        element_category.append(line[2])
+
+                        # print(line[1] + ", " + line[2] + ", " + line[3])
+                        print(line[1] + ", " + line[2])
+
                 except:
                     traceback.print_exc()
                     result = "An error occurred. Please try again."
@@ -165,7 +179,8 @@ def upload_file(request):
                             'relations':relations,
                             'semanticRoles':semanticRoles,
                             'sentiments':sentiments,
-                            'contractElements' : zip(element_text, element_nature, element_party, element_category)
+                            'contractElements' : zip(element_text, element_nature_party, element_category)
+                            # 'contractElements' : zip(element_text, element_nature, element_party, element_category)
                             # 'contents':contents,
                             # 'pdfToHTML': pdfToHTML,
                             # 'contractElements' : contractElements
@@ -396,18 +411,21 @@ def exportElements(contractElementsPath, complyRes = []):
                 element_text = element['text']
                 elementList.append(element_text)
 
-                element_nature = ''
-                element_party = ''
+                # element_nature = ''
+                # element_party = ''
+                element_nature_party = ''
                 element_category_label = ''
                 
                 for element_type in element['types']:
-                    element_nature = element_type['label']['nature']
-                    element_party = element_type['label']['party']
+                    # element_nature = element_type['label']['nature']
+                    # element_party = element_type['label']['party']
+                    element_nature_party = element_type['label']['nature'] + "-" + element_type['label']['party']
                 
                 for element_category in element['categories']:
                     element_category_label = element_category['label']
                 
-                writeCSV = '"' + element_text + '",' + element_nature + ',' + element_party + ',' + '"' + element_category_label + '"' + '\n'
+                # writeCSV = '"' + element_text + '",' + element_nature + ',' + element_party + ',' + '"' + element_category_label + '"' + '\n'
+                writeCSV = '"' + element_text + '",' + element_nature_party + ',' + '"' + element_category_label + '"' + '\n'
                 file.write(writeCSV)
         except:
             traceback.print_exc()

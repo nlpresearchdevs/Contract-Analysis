@@ -88,7 +88,8 @@
                 {% endif %} -->
                 
                 {% if contractElements %}
-                    {% for text, nature, party, category in contractElements %}
+                    {% for text, nature_party, category in contractElements %}
+
                         <!-- <span> -->
                             <!-- <div class="highlight-sentence tooltip">{{ content }} -->
                                 
@@ -101,13 +102,12 @@
                                         {{ text }}
                                     </a>
                                     <div id="popover-content" class="hide">
-                                        <p><b>Nature:</b> {{nature}}</p>
-                                        <p><b>Party:</b> {{party}}</p>
+                                        <!-- <p><b>Nature:</b> {{nature}}</p>
+                                        <p><b>Party:</b> {{party}}</p> -->
+
+                                        <p><b>Nature-Party:</b> {{nature_party}}</p>
                                         <p><b>Category:</b> {{category}}</p>
-                                        <a href="javascript:void(0)" style="text-decoration: underline;">
-                                            <i class="fa fa-edit" aria-hidden="true"></i>
-                                            Suggest Changes
-                                        </a>
+                                        <a href="javascript:void(0)" style="text-decoration: underline;"><i class="fa fa-edit" aria-hidden="true" style="padding-right: 5px"></i>Suggest changes</a>
                                     </div>
                                 </div>
 

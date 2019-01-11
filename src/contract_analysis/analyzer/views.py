@@ -21,7 +21,7 @@ natural_language_understanding = NaturalLanguageUnderstandingV1(
 
 compare_and_comply = CompareComplyV1(
     version=str(date.today()),
-    iam_apikey='NdZOJZ_hjXEIucLj0kcLLtCWx7_8bfgDjoFC_xl_JzHV',
+    iam_apikey='nrN42rHuoRvWM2j-rFSKUd1c7Css1d0vkSfvMGmdRNw5',
     url='https://gateway.watsonplatform.net/compare-comply/api'
 )
 
@@ -136,9 +136,9 @@ def upload_file(request):
                     for i, line in contractElementsLine:
                         # print(line)
                         element_text.append(line[0])
-                        if(line[1] == ''):
+                        if(line[1] == '"None"'):
                             line[1] = 'None'
-                        if(line[2] == ''):
+                        if(line[2] == '"None"'):
                             line[2] = 'None'
                         # if(line[3] == ''):
                         #     line[3] = 'None'
@@ -149,7 +149,7 @@ def upload_file(request):
                         element_category.append(line[2])
 
                         # print(line[1] + ", " + line[2] + ", " + line[3])
-                        print(line[1] + ", " + line[2])
+                        # print(line[1] + ", " + line[2])
 
                 except:
                     traceback.print_exc()
@@ -405,28 +405,47 @@ def exportSentiments(sentimentsPath, response = []):
 
 def exportElements(contractElementsPath, complyRes = []):
     elementList = []
-    with open(contractElementsPath, "w", encoding="utf-8-sig") as file:
+    element_nature_party_list = []
+    element_category_label_list = []
+
+    with open(contractElementsPath, "w", newline="\n", encoding="utf-8-sig") as file:
         try:
             for element in complyRes['elements']:
                 element_text = element['text']
                 elementList.append(element_text)
-
+                
                 # element_nature = ''
                 # element_party = ''
-                element_nature_party = ''
-                element_category_label = ''
+                element_nature_party = '"None"'
+                element_category_label = '"None"'
                 
                 for element_type in element['types']:
-                    # element_nature = element_type['label']['nature']
-                    # element_party = element_type['label']['party']
-                    element_nature_party = element_type['label']['nature'] + "-" + element_type['label']['party']
-                
+                    if element_type['label']['nature'] != ' ' or element_type['label']['party'] != ' ':
+                        element_nature_party = element_type['label']['nature'] + "-" + element_type['label']['party']
+                    # else:
+                    #     element_nature_party = '"None"'
+                        
+                print("element_nature_party: " + element_nature_party)
+                element_nature_party_list.append(element_nature_party)
+                    
                 for element_category in element['categories']:
-                    element_category_label = element_category['label']
-                
-                # writeCSV = '"' + element_text + '",' + element_nature + ',' + element_party + ',' + '"' + element_category_label + '"' + '\n'
-                writeCSV = '"' + element_text + '",' + element_nature_party + ',' + '"' + element_category_label + '"' + '\n'
-                file.write(writeCSV)
+                    if element_category['label'] != ' ':
+                        element_category_label = element_category['label']
+                    # else:
+                    #     element_category_label = '"None"'
+                    
+                print("category: " + element_category_label)
+                element_category_label_list.append(element_category_label)
+
+                # writeCSV = '"' + element_text + '",' + element_nature_party + ',' + '"' + element_category_label + '"' + '\n'
+                # file.write(writeCSV)
+            
+            rows = zip(elementList, element_nature_party_list, element_category_label_list)
+            writer = csv.writer(file)
+
+            for row in rows:
+                writer.writerow(row)
+
         except:
             traceback.print_exc()
             result = "An error occurred. Please try again."

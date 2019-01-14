@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from analyzer.models import Contract
+from analyzer.models import Contract, ContractText, ContractNatureParty, ContractCategory
 from analyzer.forms import ContractForm
 from watson_developer_cloud import NaturalLanguageUnderstandingV1, CompareComplyV1
 from watson_developer_cloud.natural_language_understanding_v1 import Features, CategoriesOptions, ConceptsOptions, RelationsOptions, SemanticRolesOptions, SentimentOptions, EntitiesOptions, KeywordsOptions
@@ -21,7 +21,7 @@ natural_language_understanding = NaturalLanguageUnderstandingV1(
 
 compare_and_comply = CompareComplyV1(
     version=str(date.today()),
-    iam_apikey='nrN42rHuoRvWM2j-rFSKUd1c7Css1d0vkSfvMGmdRNw5',
+    iam_apikey='t9Lm3AIR-AaR_hEEqGFntv7OfI2vI750B963QaX6o1qW',
     url='https://gateway.watsonplatform.net/compare-comply/api'
 )
 
@@ -78,16 +78,34 @@ def upload_file(request):
             sentimentsPath = "media/analyzer/results/sentiments/" + fileNoExt + ".csv"
             contractElementsPath = "media/analyzer/results/contractElements/" + fileNoExt + ".csv"
 
-            if not os.path.exists(contractElementsPath):
-                complyRes = compare_and_comply.classify_elements(file=userFile, model_id='contracts', file_content_type='application/pdf', filename=fileNoExt).get_result()
-                contractElements = exportElements(contractElementsPath, complyRes)
-                print('\nContractElements for this file does not exist. Begin extraction.\n\n')
-            else:
+            try:
+                # do not store new record into db if record with this docu name exists
+                # get contract from db given file path, create entry if null
+                Contract.objects.get(document=filePath)
                 print('\nContractElements for this file exists. API call halted.\n\n')
+                
+                
+            except:
+                traceback.print_exc()
+                watsonRes = Contract()
+                watsonRes.document.name = filePath
+                watsonRes.resWatsonCategories.name = categoriesPath
+                watsonRes.resWatsonConcepts.name = conceptsPath
+                watsonRes.resWatsonEntities.name = entitiesPath
+                watsonRes.resWatsonKeywords.name = keywordsPath
+                watsonRes.resWatsonRelations.name = relationsPath
+                watsonRes.resWatsonSemanticRoles.name = semanticRolesPath
+                watsonRes.resWatsonSentiments.name = sentimentsPath
+                watsonRes.resWatsonContractElements.name = contractElementsPath
+                watsonRes.save()
 
+                print('\nContractElements for this file does not exist. Begin extraction.\n\n')
 
-            # complyRes = compare_and_comply.classify_elements(file=userFile, model_id='contracts', file_content_type='application/pdf', filename=fileNoExt).get_result()
-            
+                # if record does not exist, execute API call
+                complyRes = compare_and_comply.classify_elements(file=userFile, model_id='contracts', file_content_type='application/pdf', filename=fileNoExt).get_result()
+                # contractElements = exportElements(contractElementsPath, complyRes, watsonRes)
+                extractElements(contractElementsPath, complyRes, watsonRes)
+                
             categories = exportCategories(categoriesPath, response)
             concepts = exportConcepts(conceptsPath, response)
             entities = exportEntities(entitiesPath, response)
@@ -95,6 +113,7 @@ def upload_file(request):
             relations = exportRelations(relationsPath, response)
             semanticRoles = exportSemanticRoles(semanticRolesPath, response)
             sentiments = exportSentiments(sentimentsPath, response)
+            
             # contractElements = exportElements(contractElementsPath, complyRes)
             
             # complyResJson = json.dumps(complyRes, indent=2)
@@ -117,56 +136,68 @@ def upload_file(request):
             #         traceback.print_exc()
             #         result = "An error occurred. Please try again."
             
-            element_text = []
+            # element_text_list = []
             # element_nature = []
             # element_party = []
-            element_nature_party = []
-            element_category = []
+            # element_nature_party_list = []
+            # element_category_list = []
 
-            contractElementsLine = []
+            # contractElementsLine = []
             
-            with open(contractElementsPath, "r", encoding="utf-8-sig") as file:
-                try:
-                    contractElementsLine = []
+            # with open(contractElementsPath, "r", encoding="utf-8-sig") as file:
+            #     try:
+            #         contractElementsLine = []
 
-                    reader = csv.reader(file, delimiter=",")
-                    for line in enumerate(reader):
-                        contractElementsLine.append(line)
+            #         reader = csv.reader(file, delimiter=",")
+            #         for line in enumerate(reader):
+            #             contractElementsLine.append(line)
 
-                    for i, line in contractElementsLine:
-                        # print(line)
-                        element_text.append(line[0])
-                        if(line[1] == '"None"'):
-                            line[1] = 'None'
-                        if(line[2] == '"None"'):
-                            line[2] = 'None'
-                        # if(line[3] == ''):
-                        #     line[3] = 'None'
-                        # element_nature.append(line[1])
-                        # element_party.append(line[2])
-                        element_nature_party.append(line[1])
-                        # element_category.append(line[3])
-                        element_category.append(line[2])
+            #         for i, line in contractElementsLine:
+            #             # print(line)
+            #             element_text.append(line[0])
+            #             if(line[1] == '"None"'):
+            #                 line[1] = 'None'
+            #             if(line[2] == '"None"'):
+            #                 line[2] = 'None'
+            #             # if(line[3] == ''):
+            #             #     line[3] = 'None'
+            #             # element_nature.append(line[1])
+            #             # element_party.append(line[2])
+            #             element_nature_party.append(line[1])
+            #             # element_category.append(line[3])
+            #             element_category.append(line[2])
 
-                        # print(line[1] + ", " + line[2] + ", " + line[3])
-                        # print(line[1] + ", " + line[2])
+            #             # print(line[1] + ", " + line[2] + ", " + line[3])
+            #             # print(line[1] + ", " + line[2])
 
-                except:
-                    traceback.print_exc()
-                    result = "An error occurred. Please try again."
+            #     except:
+            #         traceback.print_exc()
+            #         result = "An error occurred. Please try again."
+            element_text_list = []
+            element_text = ContractText.objects.filter(contract__document=filePath)
+            element_nature_party_list = []
+            element_category_list = []
 
-            pdfFileObj.close()
-            watsonRes = Contract()
-            watsonRes.document.name = filePath
-            watsonRes.resWatsonCategories.name = categoriesPath
-            watsonRes.resWatsonConcepts.name = conceptsPath
-            watsonRes.resWatsonEntities.name = entitiesPath
-            watsonRes.resWatsonKeywords.name = keywordsPath
-            watsonRes.resWatsonRelations.name = relationsPath
-            watsonRes.resWatsonSemanticRoles.name = semanticRolesPath
-            watsonRes.resWatsonSentiments.name = sentimentsPath
-            watsonRes.resWatsonContractElements.name = contractElementsPath
-            watsonRes.save()
+            for text in element_text:
+                element_text_list.append(text.text)
+
+                element_nature_party = ContractNatureParty.objects.filter(contractText=text)
+                element_nature_party_sublist = []
+                for nature_party in element_nature_party:
+                    element_nature_party_sublist.append(nature_party.natureParty)
+                    print(nature_party.natureParty)
+                element_nature_party_list.append(element_nature_party_sublist)
+
+                element_category = ContractCategory.objects.filter(contractText=text)
+                element_category_sublist = []
+                for category in element_category:
+                    element_category_sublist.append(category.category)
+                    print(category.category)
+                element_category_list.append(element_category_sublist)
+                
+            # pdfFileObj.close()
+            # contractElements = 
+            exportElements(contractElementsPath, zip(element_text_list, element_nature_party_list, element_category_list))
 
             return render(request, 
                         'analyzer/index.html', 
@@ -179,7 +210,7 @@ def upload_file(request):
                             'relations':relations,
                             'semanticRoles':semanticRoles,
                             'sentiments':sentiments,
-                            'contractElements' : zip(element_text, element_nature_party, element_category)
+                            'contractElements' : zip(element_text_list, element_nature_party_list, element_category_list)
                             # 'contractElements' : zip(element_text, element_nature, element_party, element_category)
                             # 'contents':contents,
                             # 'pdfToHTML': pdfToHTML,
@@ -403,51 +434,67 @@ def exportSentiments(sentimentsPath, response = []):
         
     return result
 
-def exportElements(contractElementsPath, complyRes = []):
-    elementList = []
-    element_nature_party_list = []
-    element_category_label_list = []
+def extractElements(contractElementsPath, complyRes, contract):
+    try:
+        for element in complyRes['elements']:
+            
+            element_text = element['text']
+            contractText = ContractText()
 
-    with open(contractElementsPath, "w", newline="\n", encoding="utf-8-sig") as file:
-        try:
-            for element in complyRes['elements']:
-                element_text = element['text']
-                elementList.append(element_text)
-                
-                # element_nature = ''
-                # element_party = ''
-                element_nature_party = '"None"'
-                element_category_label = '"None"'
-                
+            contractText.text = element_text
+            contractText.contract = contract
+            contractText.save()
+
+            element_nature_party = 'None'
+            element_category_label = 'None'
+            
+            if(element['types']):
                 for element_type in element['types']:
                     if element_type['label']['nature'] != ' ' or element_type['label']['party'] != ' ':
                         element_nature_party = element_type['label']['nature'] + "-" + element_type['label']['party']
-                    # else:
-                    #     element_nature_party = '"None"'
-                        
-                print("element_nature_party: " + element_nature_party)
-                element_nature_party_list.append(element_nature_party)
-                    
+                        contractNatureParty = ContractNatureParty()
+                        contractNatureParty.natureParty = element_nature_party
+                        contractNatureParty.contractText = contractText
+                        contractNatureParty.save()
+            else:
+                contractNatureParty = ContractNatureParty()
+                contractNatureParty.natureParty = element_nature_party
+                contractNatureParty.contractText = contractText
+                contractNatureParty.save()
+            
+            if(element['categories']):
                 for element_category in element['categories']:
                     if element_category['label'] != ' ':
                         element_category_label = element_category['label']
-                    # else:
-                    #     element_category_label = '"None"'
-                    
-                print("category: " + element_category_label)
-                element_category_label_list.append(element_category_label)
+                        contractCategory = ContractCategory()
+                        contractCategory.category = element_category_label
+                        contractCategory.contractText = contractText
+                        contractCategory.save()
+            else:
+                contractCategory = ContractCategory()
+                contractCategory.category = element_category_label
+                contractCategory.contractText = contractText
+                contractCategory.save()
+    except:
+        traceback.print_exc()
+        # result = "An error occurred. Please try again."
+    return
 
-                # writeCSV = '"' + element_text + '",' + element_nature_party + ',' + '"' + element_category_label + '"' + '\n'
-                # file.write(writeCSV)
-            
-            rows = zip(elementList, element_nature_party_list, element_category_label_list)
-            writer = csv.writer(file)
+def exportElements(contractElementsPath, contractElements):
+    with open(contractElementsPath, "w", newline="\n", encoding="utf-8-sig") as file:
+        try:
 
-            for row in rows:
-                writer.writerow(row)
+            # shortcut, does not break down nature_part and category_list individually
+            # writer = csv.writer(file)
+            # for row in contractElements:
+            #     writer.writerow(row)
 
+            for text, nature_party_list, category_list in contractElements:
+                row = ""
+                for nature_party in nature_party_list:
+                    for category in category_list:
+                        row = '"'+ text + '","' + nature_party + '","' + category + '"\n'
+                        file.write(row)
         except:
             traceback.print_exc()
-            result = "An error occurred. Please try again."
-    # print(elementList)
-    return elementList
+    return

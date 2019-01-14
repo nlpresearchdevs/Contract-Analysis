@@ -15,6 +15,8 @@ class Contract(models.Model):
     resWatsonSentiments = models.FileField(upload_to='analyzer/results/sentiment', null=True, blank=True)
     resWatsonContractElements = models.FileField(upload_to='analyzer/results/contractElements', null=True, blank=True)
 
+
+
     @property
     def filename(self):
         return os.path.basename(self.document.name)
@@ -24,3 +26,27 @@ class Contract(models.Model):
         # return "%s (ID:%s)" % (self.name, self.id)
         return "{0}. {1}".format(self.id, self.filename)
         # return "(ID:%s)" % (self.id) 
+
+class ContractText(models.Model):
+    text = models.CharField(max_length=250)
+    contract = models.ForeignKey(Contract, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "{0}. {1}".format(self.id, self.text)
+        return "(ID:%s)" % (self.id)
+
+class ContractNatureParty(models.Model):
+    natureParty = models.CharField(max_length=250)
+    contractText = models.ForeignKey(ContractText, on_delete=models.CASCADE)
+
+    def __str__(self):
+        # return "{0}. {1}".format(self.id, self.natureParty)
+        return "(ID:%s)" % (self.id)
+
+class ContractCategory(models.Model):
+    category = models.CharField(max_length=250)
+    contractText = models.ForeignKey(ContractText, on_delete=models.CASCADE)
+
+    def __str__(self):
+        # return "{0}. {1}".format(self.id, self.category)
+        return "(ID:%s)" % (self.id)

@@ -18,12 +18,36 @@ $(document).on('click', function (e) {
     });
 });
 
-// window.onload = function() {
-//     if (window.jQuery) {  
-//         // jQuery is loaded  
-//         console.log("jQuery is loaded");
-//     } else {
-//         // jQuery is not loaded
-//         console.log("jQuery is not loaded");
-//     }
-// };
+window.onload = function() {
+    if (window.jQuery) {  
+        // jQuery is loaded  
+        console.log("jQuery is loaded");
+    } else {
+        // jQuery is not loaded
+        console.log("jQuery is not loaded");
+    }
+};
+
+$(function () {
+    // $('.click[data-categoryList~=]').bind('focus', function(){
+    //     $(this).toggleClass('click');
+    // });
+    
+    // $('input[type=checkbox]').each(function() {
+    //     console.log($(this).attr('id'));
+    // });
+
+    $('input[type=checkbox]').on('click', function(e) {
+        if ($('input[type=checkbox]').is(':checked')) {
+            var checkBoxId = $(this).attr('id');
+            // $('a[class="click"').focus()
+            // var dataArray = this.attr()
+                // console.log($(this).attr('id'));
+                // console.log(checkBoxId);
+            console.log($('a[class="click"').attr('style'))
+        }
+        // console.log($(this).attr('id'));
+        // e.preventDefault();
+    });
+});
+

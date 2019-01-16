@@ -59,188 +59,93 @@
                 </p>
             </div>
         </div>
-
+        
         <div class="content-wrapper">
             <div class="content">
-                <!-- {% if keywords%}
-                    <h2 class="content-head is-center">
-                        Results
-                    </h2>
-                    <div class="pure-g">
-                        <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-                            <p style="white-space: pre; text-align: center;">{{ keywords }}</p>
-                        </div>
-                    </div>
-                {% endif %}
-                {% if categories %}
-                    <h2 class="content-head is-center">
-                        Results
-                    </h2>
-                    <div class="pure-g">
-                        <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-                            <p style="white-space: pre; text-align: center;">{{ categories }}</p>
-                        </div>
-                    </div>
-                {% endif %} -->
-
-                <!-- {% if pdfToHTML %}
-                    {{ pdfToHTML | safe }}
-                {% endif %} -->
-                
-                {% if contractElements %}
-                    {% for text, nature_party_list, category_list in contractElements %}
-
-                        <!-- <span> -->
-                            <!-- <div class="highlight-sentence tooltip">{{ content }} -->
-                                
-                                <!-- <a href="javascript:void(0)" data-html="true" data-tooltip='Nature: {{nature}} Party: {{party}} Category: {{category}}' class="click">{{ text }}</a> -->
-                                
-                                <!-- <a id="demo" href="javascript:void(0)" tabindex="0" class="" data-html='true' data-toggle="popover" data-trigger="focus" title="" data-content='Nature: {{nature}} Party: {{party}} Category: {{category}}'>{{ text }}</a> -->
-                                
-                                <div class="docu-wrapper">
-                                    <a class="click" style="color: black; text-decoration: none;" data-placement="right" data-toggle="popover" data-animation="false" data-container="body" data-placement="left" type="button" href="javascript:void(0)" style="padding-right: 2%">
-                                        {{ text }}
-                                    </a>
-                                    <div id="popover-content" class="hide">
-                                        <!-- <p><b>Nature:</b> {{nature}}</p>
-                                        <p><b>Party:</b> {{party}}</p> -->
-                                        
-                                        <p><b>Nature-Party:</b>
-                                        {% for nature_party in nature_party_list%}
-                                            <span>{% if forloop.last %}{{nature_party}}{% else %}{{nature_party}}, {% endif %}</span>
-                                        {% endfor %}
-                                        </p>
-                                        
-                                        <p><b>Category:</b>
-                                        {% for category in category_list%}
-                                            <span>{% if forloop.last %}{{category}}{% else %}{{category}}, {% endif %}</span>
-                                        {% endfor %}
-                                        </p>
-                                        <!-- <p><b>Category:</b> {{category}}</p> -->
-                                        <a href="javascript:void(0)" style="text-decoration: underline;"><i class="fa fa-edit" aria-hidden="true" style="padding-right: 5px"></i>Suggest changes</a>
-                                    </div>
-                                </div>
-
-                                <!-- <span class="tooltiptext">Suggestions</span> -->
-                            <!-- </div> -->
-                        <!-- </span> -->
-                        <!-- <br> -->
-                        <br>
-
-                        <!-- <div>
-                            <a href="javascript:void(0)" tooltips="Suggestions" class="click">{{ content }}</a>
-                        </div>
+                <div class="row">
+                    {% if contractElements %}
+                        <p class="file-name-header">
+                            {{ fileName }}    
+                        </p>
+                    {% endif %}
+                    <br>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        {% if contractElements %}
+                            <!-- <p>Filters</p> -->
+                            <!-- <p>Select labels to filter elements</p><br>                             -->
+                            <p style="font-size: 110%"><b>Categories: </b></p>
+                            <ul class="list-group"></ul>
+                                {% for category, count in categorySet %}
+                                    {% if category != "None" %}
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <input type="checkbox" id="{{category}}" name="{{category}}" value="{{category}}"><label for="{{category}}{{ forloop.counter }}"><span>&nbsp;&nbsp;{{category}}</span></label>
+                                            <!-- <button class="btn" onclick="filterSelection('all')" style="background: white">{{category}}</button> -->
+                                            <span class="badge badge-primary badge-pill">{{count}}</span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                            
                             <br>
-                            <br> -->
-                        <!-- <p class="highlight-sentence">{{ content }}</p> -->
-                    {% endfor %}
-                {% endif %}
-            </div>
-        <!-- </div> -->
-                <!--  <div class="pure-g">
-                    <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-
-                        <h3 class="content-subhead">
-                            <i class="fa fa-rocket"></i>
-                            Get Started Quickly
-                        </h3>
-                        <p>
-                            Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-                        </p>
+                            <p style="font-size: 110%"><b>Nature: </b></p>
+                            <ul class="list-group"></ul>
+                                {% for nature, count in natureSet %}
+                                    {% if nature != "None" %}
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <input type="checkbox" id="{{nature}}" name="{{nature}}" value="{{nature}}"><label for="{{nature}}{{ forloop.counter }}"><span>&nbsp;&nbsp;{{nature}}</span></label>
+                                            <!-- <button class="btn" onclick="filterSelection('all')" style="background: white">{{nature}}</button> -->
+                                            <span class="badge badge-primary badge-pill">{{count}}</span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                            
+                            <br>
+                            <p style="font-size: 110%"><b>Party: </b></p>   
+                            <ul class="list-group"></ul>
+                                {% for party, count in partySet %}
+                                    {% if party != "None" %}
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <input type="checkbox" id="{{party}}" name="{{party}}" value="{{party}}"><label for="{{party}}{{ forloop.counter }}"><span>&nbsp;&nbsp;{{party}}</span></label>
+                                            <!-- <button class="btn" onclick="filterSelection('all')" style="background: white">{{party}}</button> -->
+                                            <span class="badge badge-primary badge-pill">{{count}}</span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                     </div>
-                    <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-                        <h3 class="content-subhead">
-                            <i class="fa fa-mobile"></i>
-                            Responsive Layouts
-                        </h3>
-                        <p>
-                            Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-                        </p>
+                    <div class="col-sm-6">
+                        {% if contractElements %}
+                            {% for text, nature_party_list, category_list in contractElements %}
+                                    <div class="docu-wrapper">
+                                        <a class="click" style="color: black; text-decoration: none; padding-right: 2%" data-placement="right" data-toggle="popover" data-animation="false" data-container="body" data-placement="left" type="button" href="javascript:void(0)" data-naturePartyList = "{{nature_party_list}}" data-categoryList = "{{category_list}}">
+                                            {{ text }}
+                                        </a>
+                                        <div id="popover-content" class="hide">
+                                            <p><b>Nature-Party:</b>
+                                            {% for nature_party in nature_party_list %}
+                                                <span>{% if forloop.last %}{{nature_party}}{% else %}{{nature_party}}, {% endif %}</span>
+                                            {% endfor %}
+                                            </p>
+                                            
+                                            <p><b>Category:</b>
+                                            {% for category in category_list %}
+                                                <span>{% if forloop.last %}{{category}}{% else %}{{category}}, {% endif %}</span>
+                                            {% endfor %}
+                                            </p>
+                                            <a href="javascript:void(0)" style="text-decoration: underline;"><i class="fa fa-edit" aria-hidden="true" style="padding-right: 5px"></i>Suggest changes</a>
+                                        </div>
+                                    </div>
+                                <br>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-                    <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-                        <h3 class="content-subhead">
-                            <i class="fa fa-th-large"></i>
-                            Modular
-                        </h3>
-                        <p>
-                            Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-                        </p>
-                    </div>
-                    <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-                        <h3 class="content-subhead">
-                            <i class="fa fa-check-square-o"></i>
-                            Plays Nice
-                        </h3>
-                        <p>
-                            Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-                        </p>
-                    </div>
+                    <div class="col-sm-3"></div>
                 </div>
             </div>
-
-            <div class="ribbon l-box-lrg pure-g">
-                <div class="l-box-lrg is-center pure-u-1 pure-u-md-1-2 pure-u-lg-2-5">
-                    <img width="300" alt="File Icons" class="pure-img-responsive" src="img/common/file-icons.png">
-                </div>
-                <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5">
-
-                    <h2 class="content-head content-head-ribbon">Laboris nisi ut aliquip.</h2>
-
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat. Duis aute irure dolor.
-                    </p>
-                </div>
-            </div>
-
-            <div class="content">
-                <h2 class="content-head is-center">Dolore magna aliqua. Uis aute irure.</h2>
-
-                <div class="pure-g">
-                    <div class="l-box-lrg pure-u-1 pure-u-md-2-5">
-                        <form class="pure-form pure-form-stacked">
-                            <fieldset>
-
-                                <label for="name">Your Name</label>
-                                <input id="name" type="text" placeholder="Your Name">
-
-
-                                <label for="email">Your Email</label>
-                                <input id="email" type="email" placeholder="Your Email">
-
-                                <label for="password">Your Password</label>
-                                <input id="password" type="password" placeholder="Your Password">
-
-                                <button type="submit" class="pure-button">Sign Up</button>
-                            </fieldset>
-                        </form>
-                    </div>
-
-                    <div class="l-box-lrg pure-u-1 pure-u-md-3-5">
-                        <h4>Contact Us</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                            consequat.
-                        </p>
-
-                        <h4>More Information</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua.
-                        </p>
-                    </div>
-                </div>
-
-            </div> -->
-            
-            <!-- <div class="footer l-box is-center"> -->
-                <!-- View the source of this layout to learn more. Made with love by the YUI Team. -->
-                <!-- <h5 style="color: white">Application Prototype</h5> -->
-            <!-- </div> -->
         </div>
     </body>
 </html>

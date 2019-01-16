@@ -12,6 +12,11 @@
     border-radius: 5px;
     font-size: 120%;
 }
+
+#sticky-sidebar {
+    position:fixed;
+    max-width: 20%;
+}
 /* 
 .tooltip {
     position: relative;
@@ -56,7 +61,7 @@
 } */
 
 .docu-wrapper {
-    width: 60%;
+    width: 100%;
     margin: 0px auto;
     text-align: justify;
     /* text-justify: inter-word; */
@@ -82,6 +87,18 @@
     outline-offset: 2px;
     /* border-color:#1f8dd6; */
     /* border-width: 5px; */
+}
+
+.file-name-header{
+    height: 3rem;
+    min-height: 3rem;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* background-color: #f6f6f6; */
+    font-size: 170%;
+    padding-left: 1%;
 }
 
 /* 

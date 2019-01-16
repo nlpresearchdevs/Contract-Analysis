@@ -199,6 +199,39 @@ def upload_file(request):
             # contractElements = 
             exportElements(contractElementsPath, zip(element_text_list, element_nature_party_list, element_category_list))
 
+            flat_element_category_list = sum(element_category_list, [])
+            flat_element_nature_party_list = sum(element_nature_party_list, [])
+            flat_element_nature_list = []
+            flat_element_party_list = []
+            categorySet = sorted(set(flat_element_category_list)) # get unique items by converting the list into a set
+            naturePartySet = sorted(set(flat_element_nature_party_list))
+            natureSet = []
+            partySet = []
+            categoryCount = []
+            natureCount = []
+            partyCount = []
+
+            for category in categorySet:
+                categoryCount.append(flat_element_category_list.count(category))
+            
+            for natureParty in flat_element_nature_party_list:
+                print("natureParty: " + natureParty)
+                if(natureParty != "None"):
+                    nature, party = natureParty.split("-", 1)
+                else:
+                    nature, party = "None", "None"
+                flat_element_nature_list.append(nature)
+                flat_element_party_list.append(party)
+            
+            natureSet = sorted(set(flat_element_nature_list))            
+            partySet = sorted(set(flat_element_party_list))
+
+            for nature in natureSet:
+                natureCount.append(flat_element_nature_list.count(nature))
+            
+            for party in partySet:
+                partyCount.append(flat_element_party_list.count(party))
+            
             return render(request, 
                         'analyzer/index.html', 
                         {
@@ -210,7 +243,11 @@ def upload_file(request):
                             'relations':relations,
                             'semanticRoles':semanticRoles,
                             'sentiments':sentiments,
-                            'contractElements' : zip(element_text_list, element_nature_party_list, element_category_list)
+                            'contractElements' : zip(element_text_list, element_nature_party_list, element_category_list),
+                            'fileName': fileName,
+                            'categorySet' : zip(categorySet, categoryCount),
+                            'natureSet' : zip(natureSet, natureCount),
+                            'partySet' : zip(partySet, partyCount)
                             # 'contractElements' : zip(element_text, element_nature, element_party, element_category)
                             # 'contents':contents,
                             # 'pdfToHTML': pdfToHTML,

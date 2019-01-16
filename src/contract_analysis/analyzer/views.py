@@ -21,7 +21,7 @@ natural_language_understanding = NaturalLanguageUnderstandingV1(
 
 compare_and_comply = CompareComplyV1(
     version=str(date.today()),
-    iam_apikey='t9Lm3AIR-AaR_hEEqGFntv7OfI2vI750B963QaX6o1qW',
+    iam_apikey='Gc_T-ndAWxlkvNNZDObnjGRyEW8aD3bp9Knydf6P9X1y',
     url='https://gateway.watsonplatform.net/compare-comply/api'
 )
 

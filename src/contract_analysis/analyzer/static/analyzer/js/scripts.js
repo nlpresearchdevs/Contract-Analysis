@@ -38,16 +38,27 @@ $(function () {
     // });
 
     $('input[type=checkbox]').on('click', function(e) {
+        var checkBoxId = $(this).attr('id');
         if ($('input[type=checkbox]').is(':checked')) {
-            var checkBoxId = $(this).attr('id');
             // $('a[class="click"').focus()
             // var dataArray = this.attr()
                 // console.log($(this).attr('id'));
                 // console.log(checkBoxId);
-            console.log($('a[class="click"').attr('style'))
+            // console.log($('a[class="click"').data('categorylist'))
+            // $('a[class="click"').data('categorylist')
+            // $('a[data-categorylist="None"').focus()
+
+            if( $('a[class="click"').data('categorylist').indexOf( checkBoxId ) > -1 ) {
+                console.log( 'Has ' + checkBoxId );
+                // $('a[data-categorylist=checkBoxId').focus()
+                $('a[class="click"').data('categorylist').focus()
+            } else {
+                console.log( 'Does not have ' + checkBoxId );
+                console.log($('a[class="click"').attr('data-categorylist'));
+            }
+
         }
         // console.log($(this).attr('id'));
         // e.preventDefault();
     });
 });
-

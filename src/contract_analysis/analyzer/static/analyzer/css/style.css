@@ -17,6 +17,10 @@
     position:fixed;
     max-width: 20%;
 }
+
+.no-bullet {
+    list-style-type: none;
+}
 /* 
 .tooltip {
     position: relative;
@@ -99,6 +103,11 @@
     /* background-color: #f6f6f6; */
     font-size: 170%;
     padding-left: 1%;
+}
+
+.affix {
+    top: 20px;
+    z-index: 9999 !important;
 }
 
 /* 

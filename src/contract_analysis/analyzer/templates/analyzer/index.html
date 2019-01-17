@@ -121,7 +121,7 @@
                         {% if contractElements %}
                             {% for text, nature_party_list, category_list in contractElements %}
                                     <div class="docu-wrapper">
-                                        <a class="click" style="color: black; text-decoration: none; padding-right: 2%" data-placement="right" data-toggle="popover" data-animation="false" data-container="body" data-placement="left" type="button" href="javascript:void(0)" data-naturePartyList = "{{nature_party_list}}" data-categoryList = "{{category_list}}">
+                                        <a class="click" style="color: black; text-decoration: none; padding-right: 2%" data-placement="right" data-toggle="popover" data-animation="false" data-container="body" data-placement="left" type="button" href="javascript:void(0)" data-naturePartyList = "{{nature_party_list}}" data-categoryList = "{{category_list}}" data-text="{{ text }}">
                                             {{ text }}
                                         </a>
                                         <div id="popover-content" class="hide">

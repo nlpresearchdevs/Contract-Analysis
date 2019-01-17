@@ -102,10 +102,11 @@ def upload_file(request):
                 print('\nContractElements for this file does not exist. Begin extraction.\n\n')
 
                 # if record does not exist, execute API call
-                complyRes = compare_and_comply.classify_elements(file=userFile, model_id='contracts', file_content_type='application/pdf', filename=fileNoExt).get_result()
+                complyRes = compare_and_comply.classify_elements(file=userFile, model_id='contracts', filename=fileNoExt).get_result()
                 # contractElements = exportElements(contractElementsPath, complyRes, watsonRes)
                 extractElements(contractElementsPath, complyRes, watsonRes)
-                
+            
+            # save to csv
             categories = exportCategories(categoriesPath, response)
             concepts = exportConcepts(conceptsPath, response)
             entities = exportEntities(entitiesPath, response)

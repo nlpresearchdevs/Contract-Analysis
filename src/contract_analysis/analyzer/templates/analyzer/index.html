@@ -80,7 +80,7 @@
                                 {% for category, count in categorySet %}
                                     {% if category != "None" %}
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <input type="checkbox" id="{{category}}" name="{{category}}" value="{{category}}"><label for="{{category}}{{ forloop.counter }}"><span>&nbsp;&nbsp;{{category}}</span></label>
+                                            <input type="checkbox" class="filterPaneCheckBox categoryCheckBox" id="{{category}}" name="{{category}}" value="{{category}}"><label for="{{category}}"><span>&nbsp;&nbsp;{{category}}</span></label>
                                             <!-- <button class="btn" onclick="filterSelection('all')" style="background: white">{{category}}</button> -->
                                             <span class="badge badge-primary badge-pill">{{count}}</span>
                                         </li>
@@ -94,7 +94,7 @@
                                 {% for nature, count in natureSet %}
                                     {% if nature != "None" %}
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <input type="checkbox" id="{{nature}}" name="{{nature}}" value="{{nature}}"><label for="{{nature}}{{ forloop.counter }}"><span>&nbsp;&nbsp;{{nature}}</span></label>
+                                            <input type="checkbox" class="filterPaneCheckBox natureCheckBox" id="{{nature}}" name="{{nature}}" value="{{nature}}"><label for="{{nature}}"><span>&nbsp;&nbsp;{{nature}}</span></label>
                                             <!-- <button class="btn" onclick="filterSelection('all')" style="background: white">{{nature}}</button> -->
                                             <span class="badge badge-primary badge-pill">{{count}}</span>
                                         </li>
@@ -108,7 +108,7 @@
                                 {% for party, count in partySet %}
                                     {% if party != "None" %}
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <input type="checkbox" id="{{party}}" name="{{party}}" value="{{party}}"><label for="{{party}}{{ forloop.counter }}"><span>&nbsp;&nbsp;{{party}}</span></label>
+                                            <input type="checkbox" class="filterPaneCheckBox partyCheckBox" id="{{party}}" name="{{party}}" value="{{party}}"><label for="{{party}}"><span>&nbsp;&nbsp;{{party}}</span></label>
                                             <!-- <button class="btn" onclick="filterSelection('all')" style="background: white">{{party}}</button> -->
                                             <span class="badge badge-primary badge-pill">{{count}}</span>
                                         </li>
@@ -136,7 +136,29 @@
                                                 <span>{% if forloop.last %}{{category}}{% else %}{{category}}, {% endif %}</span>
                                             {% endfor %}
                                             </p>
-                                            <a href="javascript:void(0)" style="text-decoration: underline;"><i class="fa fa-edit" aria-hidden="true" style="padding-right: 5px"></i>Suggest changes</a>
+                                            <a class="suggestions" href="javascript:void(0)" style="text-decoration: underline;" data-toggle="suggestions-popover"><i class="fa fa-edit" aria-hidden="true" style="padding-right: 5px"></i>Suggest changes</a>
+                                                <div id="suggestions-popover-content" class="hide">
+                                                    <p><b>Suggest Changes</b></p>
+                                                    <p>Suggest labels for an element, or let us know if an element has been labeled correctly.</p>
+                                                    <hr>
+                                                    
+                                                    <p>Nature-Party</p>
+                                                    <p><i>No labels defined</i></p>
+                                                    <hr>
+
+                                                    <p>Category</p>
+                                                    <p><i>No labels defined.</i></p>
+                                                    <hr>
+
+                                                    <p><i>Dont't see a label you're looking for?</i></p>
+                                                    <input type="submit" value="Submit">
+                                                    <hr>
+
+                                                    <p>Any comments? (Optional)</p>
+                                                    <textarea rows="4" cols="50">
+                                                        Anything else you would like to share?
+                                                    </textarea>
+                                                </div>
                                         </div>
                                     </div>
                                 <br>

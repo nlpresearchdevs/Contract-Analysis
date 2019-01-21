@@ -7,54 +7,62 @@ from watson_developer_cloud.natural_language_understanding_v1 import Features, C
 from django.urls import reverse
 from datetime import date
 import traceback
-# from django.conf import settings
 import PyPDF2, json, os
 import pandas as pd
 import csv
-# Create your views here.
 
+# NLC service credentialsc
 natural_language_understanding = NaturalLanguageUnderstandingV1(
     version=str(date.today()),
     iam_apikey='0w1akurVaCODOeW8hwzb99RD5mLrIGCAEjCZLwilohOO',
     url='https://gateway.watsonplatform.net/natural-language-understanding/api'
 )
 
+
+# C&C service credentials
 compare_and_comply = CompareComplyV1(
     version=str(date.today()),
     iam_apikey='Gc_T-ndAWxlkvNNZDObnjGRyEW8aD3bp9Knydf6P9X1y',
     url='https://gateway.watsonplatform.net/compare-comply/api'
 )
 
+
+# index page
 def index(request):
-    # vPos=Contract.objects.order_by('uploaded_at')
     form=ContractForm()
-    # return render(request, 'analyzer/index.html', { 'Pos':vPos ,'form':form })
     return render(request, 'analyzer/index.html', {'form':form})
 
+
+# upload_file page
 def upload_file(request):
     if request.method == 'POST':
         form = ContractForm(request.POST, request.FILES)
         if form.is_valid():
+
+            # Get info about uploaded file
             userFile = request.FILES['document']
             fileName = userFile.name
             filePath = os.path.join('media/analyzer/contracts/', fileName)
             fileNoExt, fileExt = os.path.splitext('media/analyzer/contracts/' + fileName)
             
-            # save file if does not exist
+            # save file if it does not exist in path
             if not os.path.exists(filePath):
                 form.save()
             
-            # return HttpResponseRedirect('analyzer/success.html')
-            # file name without extension
+            # remove file extension
             fileNoExt = fileNoExt.replace('media/analyzer/contracts/','')
+
+            # read PDF file
             pdfFileObj  = open('media/analyzer/contracts/' + fileName, 'rb')
             pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
 
+            # store file contents into text variable
             text = ''
             for page in range(pdfReader.numPages):
                 pageObj = pdfReader.getPage(page)
                 text += pageObj.extractText()
             
+            # NLC API Call
             response = natural_language_understanding.analyze(
                 text=text,
                 features=Features(
@@ -67,8 +75,11 @@ def upload_file(request):
                     sentiment=SentimentOptions()
                 )
             ).get_result()
+
+            # convert API Response to JSON
             responseJson = json.dumps(response, indent=2)
 
+            # define csv paths
             categoriesPath = "media/analyzer/results/categories/" + fileNoExt + ".csv"
             conceptsPath = "media/analyzer/results/concepts/" + fileNoExt + ".csv"
             entitiesPath = "media/analyzer/results/entities/" + fileNoExt + ".csv"
@@ -86,6 +97,7 @@ def upload_file(request):
                 
                 
             except:
+                # store paths to model
                 traceback.print_exc()
                 watsonRes = Contract()
                 watsonRes.document.name = filePath
@@ -103,7 +115,7 @@ def upload_file(request):
 
                 # if record does not exist, execute API call
                 complyRes = compare_and_comply.classify_elements(file=userFile, model_id='contracts', filename=fileNoExt).get_result()
-                # contractElements = exportElements(contractElementsPath, complyRes, watsonRes)
+                # save contract elements to db
                 extractElements(contractElementsPath, complyRes, watsonRes)
             
             # save to csv
@@ -115,65 +127,7 @@ def upload_file(request):
             semanticRoles = exportSemanticRoles(semanticRolesPath, response)
             sentiments = exportSentiments(sentimentsPath, response)
             
-            # contractElements = exportElements(contractElementsPath, complyRes)
-            
-            # complyResJson = json.dumps(complyRes, indent=2)
-            # print(complyResJson)
-            # pdfToHTML =  complyRes['document']['html']
-
-            # print(pdfToHTML)
-
-            # with open(contractElementsPath, "r", encoding="utf-8-sig") as file:
-            #     try:
-            #         contents = []
-            #         for line in file:
-            #             contents.append(line)
-            #         # for element in complyRes['elements']:
-            #         #     element_text = element['text']
-            #         #     elementList.append(element_text)
-            #         #     writeCSV = element_text + "\n"
-            #         #     file.write(writeCSV)
-            #     except:
-            #         traceback.print_exc()
-            #         result = "An error occurred. Please try again."
-            
-            # element_text_list = []
-            # element_nature = []
-            # element_party = []
-            # element_nature_party_list = []
-            # element_category_list = []
-
-            # contractElementsLine = []
-            
-            # with open(contractElementsPath, "r", encoding="utf-8-sig") as file:
-            #     try:
-            #         contractElementsLine = []
-
-            #         reader = csv.reader(file, delimiter=",")
-            #         for line in enumerate(reader):
-            #             contractElementsLine.append(line)
-
-            #         for i, line in contractElementsLine:
-            #             # print(line)
-            #             element_text.append(line[0])
-            #             if(line[1] == '"None"'):
-            #                 line[1] = 'None'
-            #             if(line[2] == '"None"'):
-            #                 line[2] = 'None'
-            #             # if(line[3] == ''):
-            #             #     line[3] = 'None'
-            #             # element_nature.append(line[1])
-            #             # element_party.append(line[2])
-            #             element_nature_party.append(line[1])
-            #             # element_category.append(line[3])
-            #             element_category.append(line[2])
-
-            #             # print(line[1] + ", " + line[2] + ", " + line[3])
-            #             # print(line[1] + ", " + line[2])
-
-            #     except:
-            #         traceback.print_exc()
-            #         result = "An error occurred. Please try again."
+            # query contract elements from db for template display
             element_text_list = []
             element_text = ContractText.objects.filter(contract__document=filePath)
             element_nature_party_list = []
@@ -196,10 +150,12 @@ def upload_file(request):
                     print(category.category)
                 element_category_list.append(element_category_sublist)
                 
-            # pdfFileObj.close()
-            # contractElements = 
+            pdfFileObj.close()
+
+            # save queried contract elements into csv for future training
             exportElements(contractElementsPath, zip(element_text_list, element_nature_party_list, element_category_list))
 
+            # convert to 1d array for template display
             flat_element_category_list = sum(element_category_list, [])
             flat_element_nature_party_list = sum(element_nature_party_list, [])
             flat_element_nature_list = []
@@ -224,9 +180,11 @@ def upload_file(request):
                 flat_element_nature_list.append(nature)
                 flat_element_party_list.append(party)
             
+            # convert 1d array into set to remove redundant data
             natureSet = sorted(set(flat_element_nature_list))            
             partySet = sorted(set(flat_element_party_list))
 
+            # for template to display number of occurrences of category/nature-party
             for nature in natureSet:
                 natureCount.append(flat_element_nature_list.count(nature))
             
@@ -249,17 +207,14 @@ def upload_file(request):
                             'categorySet' : zip(categorySet, categoryCount),
                             'natureSet' : zip(natureSet, natureCount),
                             'partySet' : zip(partySet, partyCount)
-                            # 'contractElements' : zip(element_text, element_nature, element_party, element_category)
-                            # 'contents':contents,
-                            # 'pdfToHTML': pdfToHTML,
-                            # 'contractElements' : contractElements
                         }
                     )
     else:
         form = ContractForm()
-    # return HttpResponseRedirect(reverse('analyzer:index', args=(form)))
     return render(request, 'analyzer/index.html', {'form':form})
 
+
+# write categories into CSV file for training
 def exportCategories(categoriesPath, response = []):
     result = ''
     with open(categoriesPath, "w", encoding="utf-8-sig") as file:
@@ -279,6 +234,8 @@ def exportCategories(categoriesPath, response = []):
         
     return result
 
+
+# write concepts into CSV file for training
 def exportConcepts(conceptsPath, response = []):
     result = ''
     with open(conceptsPath, "w", encoding="utf-8-sig") as file:
@@ -322,6 +279,8 @@ def exportConcepts(conceptsPath, response = []):
 #             watsonRes.save()
 #     return result
 
+
+# write entities into CSV file for training
 def exportEntities(entitiesPath, response = []):
     result = ''
     with open(entitiesPath, "w", encoding="utf-8-sig") as file:
@@ -340,6 +299,8 @@ def exportEntities(entitiesPath, response = []):
         
     return result
 
+
+# write keywords into CSV file for training
 def exportKeywords(keywordsPath, response = []):
     result = ''
     with open(keywordsPath, "w", encoding="utf-8-sig") as file:
@@ -364,6 +325,8 @@ def exportKeywords(keywordsPath, response = []):
         
     return result
 
+
+# write relations into CSV file for training
 def exportRelations(relationsPath, response = []):
     result = ''
     with open(relationsPath, "w", encoding="utf-8-sig") as file:
@@ -403,6 +366,8 @@ def exportRelations(relationsPath, response = []):
         
     return result
 
+
+# write semantic roles into CSV file for training
 def exportSemanticRoles(semanticRolesPath, response = []):
     result = ''
     with open(semanticRolesPath, "w", encoding="utf-8-sig") as file:
@@ -438,6 +403,8 @@ def exportSemanticRoles(semanticRolesPath, response = []):
         
     return result
 
+
+# write sentiments into CSV file for training
 def exportSentiments(sentimentsPath, response = []):
     result = ''
     with open(sentimentsPath, "w", encoding="utf-8-sig") as file:
@@ -472,6 +439,8 @@ def exportSentiments(sentimentsPath, response = []):
         
     return result
 
+
+# save contract elements into db
 def extractElements(contractElementsPath, complyRes, contract):
     try:
         for element in complyRes['elements']:
@@ -518,6 +487,8 @@ def extractElements(contractElementsPath, complyRes, contract):
         # result = "An error occurred. Please try again."
     return
 
+
+# write contract elements into CSV file for training
 def exportElements(contractElementsPath, contractElements):
     with open(contractElementsPath, "w", newline="\n", encoding="utf-8-sig") as file:
         try:

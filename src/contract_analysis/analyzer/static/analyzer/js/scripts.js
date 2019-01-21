@@ -1,6 +1,6 @@
 // shows category and nature-party popover
 $(function () {
-    $("[data-toggle=popover]").popover({
+    $(".click[data-toggle=popover]").popover({
         html: true,
         content: function() {
             return $(this).next("#popover-content").html();
@@ -8,13 +8,25 @@ $(function () {
     });
 });
 
-// shows suggestions popover
+// // shows suggestions popover
+// $(function () {
+//     $(".suggestions[data-toggle=popover]").popover({
+//         html: true,
+//         content: function() {
+//             console.log('click');
+//             return $(this).next("#suggestions-popover-content").html();
+//         }
+//     });
+// });
+
 $(function () {
-    $("[class='suggestions']").popover({
-        html: true,
-        content: function() {
-            console.log('click');
-            return $(this).next("#suggestions-popover-content").html();
+    $('.suggestions').on('click', function(e) {
+        console.log("hide");
+        //  $(".suggestions-popover-content").css('display', 'block');
+        if($(".suggestions-popover-content").is(":hidden")) {
+            $(".suggestions-popover-content").css('visibility', 'visible');
+        } else {
+            $(".suggestions-popover-content").css('visibility', 'hidden');
         }
     });
 });

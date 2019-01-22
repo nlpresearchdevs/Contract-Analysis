@@ -8,7 +8,6 @@ from django.urls import reverse
 from datetime import date
 import traceback
 import PyPDF2, json, os
-import pandas as pd
 import csv
 
 # NLC service credentialsc
@@ -24,7 +23,7 @@ compare_and_comply = CompareComplyV1(
     version=str(date.today()),
     # iam_apikey='Gc_T-ndAWxlkvNNZDObnjGRyEW8aD3bp9Knydf6P9X1y',
     # url='https://gateway.watsonplatform.net/compare-comply/api'
-    iam_apikey='Th_Uy4Rfy-LEisJ5YxwGr645372baLQFy-vodWuG8-uo',
+    iam_apikey='fMxikREBUr3NaaHWNjl-xHou8Xu2SUDiaNh6WgKY8NKY',
     url='https://gateway.watsonplatform.net/compare-comply/api' 
 )
 
@@ -154,9 +153,6 @@ def document(request):
                 
             pdfFileObj.close()
 
-            print(element_text_list)
-            print(element_nature_party_list)
-            print(element_category_list)
             # save queried contract elements into csv for future training
             exportElements(contractElementsPath, zip(element_text_list, element_nature_party_list, element_category_list))
 

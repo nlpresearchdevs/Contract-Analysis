@@ -120,25 +120,25 @@
                     <div class="col-sm-6">
                         {% if contractElements %}
                             {% for text, nature_party_list, category_list in contractElements %}
-                                    <div class="docu-wrapper">
-                                        <a class="click" style="color: black; text-decoration: none; padding-right: 2%" data-placement="right" data-toggle="popover" data-animation="false" data-container="body" type="button" href="javascript:void(0)" data-naturePartyList = "{{nature_party_list}}" data-categoryList = "{{category_list}}" data-text="{{ text }}">
-                                            {{ text }}
-                                        </a>
-                                        <div id="popover-content" class="hide">
-                                            <p><b>Nature-Party:</b>
-                                            {% for nature_party in nature_party_list %}
-                                                <span>{% if forloop.last %}{{nature_party}}{% else %}{{nature_party}}, {% endif %}</span>
-                                            {% endfor %}
-                                            </p>
-                                            
-                                            <p><b>Category:</b>
-                                            {% for category in category_list %}
-                                                <span>{% if forloop.last %}{{category}}{% else %}{{category}}, {% endif %}</span>
-                                            {% endfor %}
-                                            </p>
-                                            <a class="suggestions" style="text-decoration: underline;" data-placement="right" data-toggle="popover" data-animation="false" data-container="body"  href="javascript:void(0)" ><i class="fa fa-edit" aria-hidden="true" style="padding-right: 5px"></i>Suggest changes</a>
-                                        </div>
+                                <div class="docu-wrapper">
+                                    <a class="click" style="color: black; text-decoration: none; padding-right: 2%" data-placement="right" data-toggle="popover" data-animation="false" data-container="body" type="button" href="javascript:void(0)" data-naturePartyList = "{{nature_party_list}}" data-categoryList = "{{category_list}}" data-text="{{ text }}">
+                                        {{ text }}
+                                    </a>
+                                    <div id="popover-content" class="hide">
+                                        <p><b>Nature-Party:</b>
+                                        {% for nature_party in nature_party_list %}
+                                            <span>{% if forloop.last %}{{nature_party}}{% else %}{{nature_party}}, {% endif %}</span>
+                                        {% endfor %}
+                                        </p>
+                                        
+                                        <p><b>Category:</b>
+                                        {% for category in category_list %}
+                                            <span>{% if forloop.last %}{{category}}{% else %}{{category}}, {% endif %}</span>
+                                        {% endfor %}
+                                        </p>
+                                        <a class="suggestions" style="text-decoration: underline;" data-placement="right" data-toggle="popover" data-animation="false" data-container="body"  href="javascript:void(0)" ><i class="fa fa-edit" aria-hidden="true" style="padding-right: 5px"></i>Suggest changes</a>
                                     </div>
+                                </div>
                                 <br>
                             {% endfor %}
                         {% endif %}

@@ -48,7 +48,7 @@
                 <p>
                 <br>
                 <div style="width: 60%; margin: 0px auto;">
-                    <form action="{% url 'analyzer:upload_file' %}" class="pure-form is-center" method ="post" enctype="multipart/form-data" style="color: white; font-size: 110%;">
+                    <form action="{% url 'analyzer:document' %}" class="pure-form is-center" method ="post" enctype="multipart/form-data" style="color: white; font-size: 110%;">
                         {%csrf_token%}
                         {{form.as_p}}
                         <br>
@@ -144,31 +144,42 @@
                         {% endif %}
                     </div>
                     <div class="col-sm-3">
-                        <div id="suggestions-popover-content" class="hide">
-                            <form action="/action_page.php">
-                                <p><b>Suggest Changes</b></p>
-                                <p>Suggest labels for an element, or let us know if an element has been labeled correctly.</p>
-                                <hr>
-                                
-                                <p>Nature-Party</p>
-                                <p><i>No labels defined</i></p>
-                                <input type="text" name="natureParty"><br>
-                                <hr>
+                        <div id="suggestions-popover-content" class="suggestions-popover-content hide">
+                            <form action="#" class="pure-form pure-form-stacked">
+                                <fieldset>
+                                    <legend>Suggest Changes</legend>
+                                    <p>Suggest labels for an element, or let us know if an element has been labeled correctly.</p>
+                                    <hr>
+                                    
+                                    <label for="naturePartySuggestions">Nature-Party</label>
+                                    <!-- <button type="button" class="close" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button> -->
+                                    <select class="naturePartySuggestions pure-input-2-3">
+                                        {% for naturePartyLabel in naturePartyLabels%}
+                                            <option>{{ naturePartyLabel }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <hr>
+                                    <label for="categorySuggestions">Category</label>
+                                    <select class="categorySuggestions pure-input-2-3 ">
+                                        {% for categoryLabel in categoryLabels%}
+                                            <option>{{ categoryLabel }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <hr>
+                                    
+                                    <label for="addLabel">Dont't see a label you're looking for?</label>
+                                    <input type="text" class="addLabel pure-input-2-3" placeholder="Create a new label"><br>
+                                    <hr>
+                                    
+                                    <label for="comments">Any comments? (Optional)</label>
+                                    <textarea class="comments pure-input-2-3" placeholder="Anything else you would like to share?"></textarea>
+                                    <br>
+                                    <br>
+                                    <button type="submit" class="pure-button pure-button-primary pure-input-2-3">Submit</button>
 
-                                <p>Category</p>
-                                <p><i>No labels defined.</i></p>
-                                <input type="text" name="category"><br>
-                                <hr>
-
-                                <p><i>Dont't see a label you're looking for?</i></p>
-                                <input type="text" name="addLabel"><br>
-                                <hr>
-
-                                <p>Any comments? (Optional)</p>
-                                <textarea rows="4" cols="45%">Anything else you would like to share?</textarea>
-                                <br>
-                                <br>
-                                <input type="submit" value="Submit">
+                                </fieldset>
                             </form>
                         </div>
                     </div>

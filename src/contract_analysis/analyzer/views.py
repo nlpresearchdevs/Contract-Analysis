@@ -22,8 +22,10 @@ natural_language_understanding = NaturalLanguageUnderstandingV1(
 # C&C service credentials
 compare_and_comply = CompareComplyV1(
     version=str(date.today()),
-    iam_apikey='Gc_T-ndAWxlkvNNZDObnjGRyEW8aD3bp9Knydf6P9X1y',
-    url='https://gateway.watsonplatform.net/compare-comply/api'
+    # iam_apikey='Gc_T-ndAWxlkvNNZDObnjGRyEW8aD3bp9Knydf6P9X1y',
+    # url='https://gateway.watsonplatform.net/compare-comply/api'
+    iam_apikey='Th_Uy4Rfy-LEisJ5YxwGr645372baLQFy-vodWuG8-uo',
+    url='https://gateway.watsonplatform.net/compare-comply/api' 
 )
 
 
@@ -33,8 +35,8 @@ def index(request):
     return render(request, 'analyzer/index.html', {'form':form})
 
 
-# upload_file page
-def upload_file(request):
+# document page
+def document(request):
     if request.method == 'POST':
         form = ContractForm(request.POST, request.FILES)
         if form.is_valid():
@@ -62,7 +64,7 @@ def upload_file(request):
                 pageObj = pdfReader.getPage(page)
                 text += pageObj.extractText()
             
-            # NLC API Call
+            # NLU API Call
             response = natural_language_understanding.analyze(
                 text=text,
                 features=Features(
@@ -114,7 +116,7 @@ def upload_file(request):
                 print('\nContractElements for this file does not exist. Begin extraction.\n\n')
 
                 # if record does not exist, execute API call
-                complyRes = compare_and_comply.classify_elements(file=userFile, model_id='contracts', filename=fileNoExt).get_result()
+                complyRes = compare_and_comply.classify_elements(file=userFile, model_id='contracts', file_content_type='application/pdf', filename=fileNoExt).get_result()
                 # save contract elements to db
                 extractElements(contractElementsPath, complyRes, watsonRes)
             
@@ -152,6 +154,9 @@ def upload_file(request):
                 
             pdfFileObj.close()
 
+            print(element_text_list)
+            print(element_nature_party_list)
+            print(element_category_list)
             # save queried contract elements into csv for future training
             exportElements(contractElementsPath, zip(element_text_list, element_nature_party_list, element_category_list))
 
@@ -191,6 +196,18 @@ def upload_file(request):
             for party in partySet:
                 partyCount.append(flat_element_party_list.count(party))
             
+            naturePartyLabels = ["Definition-None", "Disclaimer-Agreement", "Disclaimer-All Parties", "Disclaimer-Company", 
+                                "Disclaimer-Consultant", "Disclaimer-End User", "Disclaimer-Supplier", "Disclaimer-Theother Party", 
+                                "Exclusion-Agreement", "Exclusion-All Parties", "Exclusion-Buyer", "Exclusion-Consultant", "Exclusion-End User", 
+                                "Exclusion-Supplier", "Exclusion-Theother Party", "Obligation-Agreement", "Obligation-All Parties", 
+                                "Obligation-Buyer", "Obligation-Company", "Obligation-Consultant", "Obligation-End User", 
+                                "Obligation-Supplier", "Obligation-Theother Party", "Right-Agreement", "Right-All Parties", 
+                                "Right-Buyer", "Right-Company", "Right-Consultant", "Right-End User", "Right-Supplier", "Right-Theother Party"]
+            categoryLabels = ["Amendments", "Asset Use", "Assignments", "Audits", "Business Continuity", "Communication", 
+                                "Confidentiality", "Deliverables", "Delivery", "Dispute Resolution", "Force Majeure", "Idemnification", 
+                                "Insurance", "Intellectual Property", "Liability", "Payment Terms & Billing", "Pricing & Taxes", "Privacy", 
+                                "Responsibilities", "Safety and Security", "Scope of Work", "Subcontracts", "Term & Termination", "Warranties"]
+
             return render(request, 
                         'analyzer/index.html', 
                         {
@@ -206,7 +223,9 @@ def upload_file(request):
                             'fileName': fileName,
                             'categorySet' : zip(categorySet, categoryCount),
                             'natureSet' : zip(natureSet, natureCount),
-                            'partySet' : zip(partySet, partyCount)
+                            'partySet' : zip(partySet, partyCount),
+                            'naturePartyLabels' : naturePartyLabels,
+                            'categoryLabels' : categoryLabels,
                         }
                     )
     else:

@@ -15,8 +15,6 @@ class Contract(models.Model):
     resWatsonSentiments = models.FileField(upload_to='analyzer/results/sentiment', null=True, blank=True)
     resWatsonContractElements = models.FileField(upload_to='analyzer/results/contractElements', null=True, blank=True)
 
-
-
     @property
     def filename(self):
         return os.path.basename(self.document.name)
@@ -33,20 +31,20 @@ class ContractText(models.Model):
 
     def __str__(self):
         return "{0}. {1}".format(self.id, self.text)
-        return "(ID:%s)" % (self.id)
+        # return "(ID:%s)" % (self.id)
 
 class ContractNatureParty(models.Model):
     natureParty = models.CharField(max_length=250)
     contractText = models.ForeignKey(ContractText, on_delete=models.CASCADE)
 
     def __str__(self):
-        # return "{0}. {1}".format(self.id, self.natureParty)
-        return "(ID:%s)" % (self.id)
+        return "{0}. {1}".format(self.id, self.natureParty)
+        # return "(ID:%s)" % (self.id)
 
 class ContractCategory(models.Model):
     category = models.CharField(max_length=250)
     contractText = models.ForeignKey(ContractText, on_delete=models.CASCADE)
 
     def __str__(self):
-        # return "{0}. {1}".format(self.id, self.category)
-        return "(ID:%s)" % (self.id)
+        return "{0}. {1}".format(self.id, self.category)
+        # return "(ID:%s)" % (self.id)

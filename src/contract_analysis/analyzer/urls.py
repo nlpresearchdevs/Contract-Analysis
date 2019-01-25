@@ -6,4 +6,5 @@ app_name = 'analyzer'
 urlpatterns = [
     path('', views.index, name='index'),
     path('document/', views.document, name='document'),
+    # path('update/', views.update, name='update'),
 ]

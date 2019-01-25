@@ -8,7 +8,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="A layout example that shows off a responsive product landing page.">
-        <title>Contract Analysis</title>
+        <title>Contract Analyzer</title>
         
         <!-- bootstrap -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>        
@@ -26,9 +26,9 @@
     </head>
     <body>
         <div class="header">
-            <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed"  style="z-index: 9999;">
+            <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed" style="z-index: 9999;">
                 <a class="pure-menu-heading" href="{% url 'analyzer:index'%}">
-                    <img class="logo" src="{% static 'analyzer/img/asi-logo-light.png' %}" alt="Contract Analysis">
+                    <img class="logo" src="{% static 'analyzer/img/asi-logo-light.png' %}" alt="Contract Analyzer">
                 </a>
 
                 <ul class="pure-menu-list">
@@ -41,7 +41,7 @@
 
         <div class="splash-container">
             <div class="splash">
-                <h1 class="splash-head">Contract Analysis</h1>
+                <h1 class="splash-head"><i class="fas fa-file-contract" aria-hidden="true"></i>&nbsp;&nbsp;Contract Analyzer</h1>
                 <p class="splash-subhead">
                     Analyze and identify content within contracts
                 </p>
@@ -52,7 +52,7 @@
                         {%csrf_token%}
                         {{form.as_p}}
                         <br>
-                        <button class="pure-button" type="submit" style=" color: #1f8dd6; background-color: white; border-radius: 4px; border-radius: 5px; font-size: 110%;">Upload and Continue</button>
+                        <button class="pure-button" type="submit" style=" color: white; background-color: #009688; border-radius: 4px; border-radius: 5px; font-size: 110%;">Upload and Continue</button>
                         <br>
                     </form>
                 </div>
@@ -82,7 +82,7 @@
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <input type="checkbox" class="filterPaneCheckBox categoryCheckBox" id="{{category}}" name="{{category}}" value="{{category}}"><label for="{{category}}"><span>&nbsp;&nbsp;{{category}}</span></label>
                                             <!-- <button class="btn" onclick="filterSelection('all')" style="background: white">{{category}}</button> -->
-                                            <span class="badge badge-primary badge-pill">{{count}}</span>
+                                            <span class="badge badge-primary badge-pill" style="background: #009688; color: white;">{{count}}</span>
                                         </li>
                                     {% endif %}
                                 {% endfor %}
@@ -96,7 +96,7 @@
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <input type="checkbox" class="filterPaneCheckBox natureCheckBox" id="{{nature}}" name="{{nature}}" value="{{nature}}"><label for="{{nature}}"><span>&nbsp;&nbsp;{{nature}}</span></label>
                                             <!-- <button class="btn" onclick="filterSelection('all')" style="background: white">{{nature}}</button> -->
-                                            <span class="badge badge-primary badge-pill">{{count}}</span>
+                                            <span class="countPill badge badge-primary badge-pill" style="background: #009688; color: white;">{{count}}</span>
                                         </li>
                                     {% endif %}
                                 {% endfor %}
@@ -110,7 +110,7 @@
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <input type="checkbox" class="filterPaneCheckBox partyCheckBox" id="{{party}}" name="{{party}}" value="{{party}}"><label for="{{party}}"><span>&nbsp;&nbsp;{{party}}</span></label>
                                             <!-- <button class="btn" onclick="filterSelection('all')" style="background: white">{{party}}</button> -->
-                                            <span class="badge badge-primary badge-pill">{{count}}</span>
+                                            <span class="badge badge-primary badge-pill" style="background: #009688; color: white;">{{count}}</span>
                                         </li>
                                     {% endif %}
                                 {% endfor %}
@@ -125,13 +125,13 @@
                                         {{ text }}
                                     </a>
                                     <div id="popover-content" class="hide">
-                                        <p><b>Nature-Party:</b>
+                                        <p id="popover-content-natureParty" data-text="{{ text }}" data-naturePartyList="{{ nature_party_list }}"><b>Nature-Party:</b>
                                         {% for nature_party in nature_party_list %}
                                             <span>{% if forloop.last %}{{nature_party}}{% else %}{{nature_party}}, {% endif %}</span>
                                         {% endfor %}
                                         </p>
                                         
-                                        <p><b>Category:</b>
+                                        <p id="popover-content-category" data-text="{{ text }}" data-categoryList="{{ category_list }}"><b>Category:</b>
                                         {% for category in category_list %}
                                             <span>{% if forloop.last %}{{category}}{% else %}{{category}}, {% endif %}</span>
                                         {% endfor %}
@@ -145,13 +145,13 @@
                     </div>
                     <div class="col-sm-3">
                         <div id="suggestions-popover-content" class="suggestions-popover-content hide">
-                            <form action="#" class="pure-form pure-form-stacked">
+                            <form action="javascript:void(0)" class="pure-form pure-form-stacked">
                                 <fieldset>
-                                    <legend>Suggest Changes</legend>
+                                    <legend>Suggest Changes <button type="button" id="suggestionsPaneCloseBtn" class="close" aria-label="Close"><span aria-hidden="true" style="font-size: 175%" >&times;</span></button></legend>
                                     <p>Suggest labels for an element, or let us know if an element has been labeled correctly.</p>
                                     <hr>
                                     
-                                    <label for="naturePartySuggestions">Nature-Party</label>
+                                    <label for="naturePartySuggestions" id="naturePartyLabel">Nature-Party</label>
                                     <!-- <button type="button" class="close" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button> -->
@@ -161,7 +161,7 @@
                                         {% endfor %}
                                     </select>
                                     <hr>
-                                    <label for="categorySuggestions">Category</label>
+                                    <label for="categorySuggestions" id="categoryLabel">Category</label>
                                     <select class="categorySuggestions pure-input-2-3 ">
                                         {% for categoryLabel in categoryLabels%}
                                             <option>{{ categoryLabel }}</option>
@@ -169,7 +169,7 @@
                                     </select>
                                     <hr>
                                     
-                                    <label for="addLabel">Dont't see a label you're looking for?</label>
+                                    <label for="addLabel">Don't see a label you're looking for?</label>
                                     <input type="text" class="addLabel pure-input-2-3" placeholder="Create a new label"><br>
                                     <hr>
                                     
@@ -177,8 +177,7 @@
                                     <textarea class="comments pure-input-2-3" placeholder="Anything else you would like to share?"></textarea>
                                     <br>
                                     <br>
-                                    <button type="submit" class="pure-button pure-button-primary pure-input-2-3">Submit</button>
-
+                                    <button type="submitSuggestion" class="pure-button pure-button-primary pure-input-2-3" style="background: #009688; color: white;" data-toggle="modal" data-target="#exampleModalCenter">Submit</button>
                                 </fieldset>
                             </form>
                         </div>
@@ -186,6 +185,28 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="z-index: 9999;">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLongTitle"><b>Confirm Submission</b></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Your suggestions will be submitted. Would you like to proceed?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go Back</button>
+                    <button type="button" class="btn btn-primary">Submit</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
     </body>
 </html>
 {% endblock %}

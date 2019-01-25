@@ -228,6 +228,12 @@ def document(request):
         form = ContractForm()
     return render(request, 'analyzer/index.html', {'form':form})
 
+# def update(request):
+#     if request.method == 'POST':
+        
+#     else:
+
+#     return
 
 # write categories into CSV file for training
 def exportCategories(categoriesPath, response = []):

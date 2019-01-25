@@ -9,6 +9,37 @@ $( document ).ready(function() {
         });
     });
 
+    // on click button, hide suggestions pane
+    $("#suggestionsPaneCloseBtn").click(function () {
+        $("#suggestions-popover-content").toggleClass('hide');
+    });
+
+    $('body').on('click', '#categoryBtnClose', function() {
+        // do something
+        console.log($(this).parent());
+        $(this).parent().remove();
+    });
+
+    $('body').on('click', '#naturePartyBtnClose', function() {
+        // do something
+        console.log($(this).parent());
+        $(this).parent().remove();
+    });
+
+    // // on click button, remove category
+    // $("#categoryBtnClose").click(function () {
+    //     // console.log("remove: " + categoryBtnClose);
+    //     // $(this).remove();
+    //     console.log($(this).parent());
+    // });
+
+    // // on click button, remove natureParty
+    // $("#naturePartyBtnClose").click(function () {
+    //     // console.log("remove: " + naturePartyBtnClose);
+    //     // $(this).remove();
+    //     console.log($(this).parent());
+    // });
+
     // // shows suggestions popover
     // $(function () {
     //     $(".suggestions[data-toggle=popover]").popover({
@@ -33,7 +64,68 @@ $( document ).ready(function() {
 
     $(document).on("click", ".suggestions", function (e) {
         // $(".suggestions").on("click", function(e) {
-            $(".suggestions-popover-content").toggleClass('hide');
+            // console.log("prev: " + $(this).prev().html());
+            // console.log("prevprev: " + $(this).prev().prev().html());
+
+            // console.log("prevDataAttr: " + $(this).prev().data('text'));
+            // console.log("prevprevDataAttr: " + $(this).prev().prev().data('text'));
+            if($(".suggestions-popover-content").is(':hidden')) {
+                $(".suggestions-popover-content").toggleClass('hide');
+                // var popOverVisible = $(".hide");
+                // if (popOverVisible) {
+                //     // popover is visible
+                //     popOverVisible.prev().popover("hide");
+                //     // console.log("IN: " + popOverVisible.attr("visible"));
+                // }
+                // console.log("OUT: " + popOverVisible);  
+            }
+
+            if($('.categoryBtn').length) {
+                $('.categoryBtn').remove();
+            }
+            if($('.naturePartyBtn').length) {
+                $('.naturePartyBtn').remove();
+            }
+
+            // prev = Category
+            // prev of prev = Nature-Party
+            var prev = $(this).prev();
+            var prevPrev = $(this).prev().prev();
+            
+            console.log("prevDataAttr: " + prev.attr('data-categoryList'));
+            console.log("prevprevDataAttr: " + prevPrev.attr('data-naturePartyList'));
+            console.log("arr: " + prevPrev.attr('data-naturePartyList').split(","));
+            
+            var categoryArr = prev.attr('data-categoryList').split(",");
+            var naturePartyArr = prevPrev.attr('data-naturePartyList').split(",");
+
+            for(var category of categoryArr) {
+                category = category.replace("'", "");
+                category = category.replace("'", "");
+                category = category.replace("[", "");
+                category = category.replace("]", "");
+                
+                $("<p class='categoryBtn'>" + category + "<button type='button' id='categoryBtnClose' class='close' aria-label='Close'><span aria-hidden='true' style='font-size: 100%' >&times;</span></button></p>").insertAfter("#categoryLabel");
+            }
+
+            for(var natureParty of naturePartyArr) {
+                // natureParty = natureParty.replace(/[\|&;\$%@"<>\(\)\+,]/g, "");
+                natureParty = natureParty.replace("'", "");
+                natureParty = natureParty.replace("'", "");
+                natureParty = natureParty.replace("[", "");
+                natureParty = natureParty.replace("]", "");
+                // console.log("np: " + natureParty);
+                $("<p class='naturePartyBtn'>" + natureParty + "<button type='button' id='naturePartyBtnClose' class='close' aria-label='Close'><span aria-hidden='true' style='font-size: 100%' >&times;</span></button></p>").insertAfter("#naturePartyLabel");
+            }
+            
+            // $("<p class='naturePartyBtn'>" + prevPrev.attr('data-naturePartyList') + "</p>").insertAfter("#naturePartyLabel");
+
+            var popOverVisible = $(".hide");
+            if (popOverVisible) {
+                // popover is visible
+                popOverVisible.prev().popover("hide");
+                // console.log("IN: " + popOverVisible.attr("visible"));
+            }
         // });
     });    
 
@@ -84,8 +176,8 @@ $( document ).ready(function() {
                     // selector += "[data-categoryList*='" + element.id + "']";                            
                 });
                 // $lis.hide();  
-                $lis.css({"background": ""});                      
                 // $('.click').filter(selector).show();	
+                $lis.css({"background": ""});                      
                 $('.click').filter(selector).css({"background": "#9ad7ff"});			   
             }
             else

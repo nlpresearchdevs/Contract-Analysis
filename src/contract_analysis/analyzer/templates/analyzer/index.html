@@ -157,14 +157,14 @@
                                     </button> -->
                                     <select class="naturePartySuggestions pure-input-2-3">
                                         {% for naturePartyLabel in naturePartyLabels%}
-                                            <option>{{ naturePartyLabel }}</option>
+                                            <option id='naturePartyLabelOpt' data-naturePartyLabel="{{ naturePartyLabel }}">{{ naturePartyLabel }}</option>
                                         {% endfor %}
                                     </select>
                                     <hr>
                                     <label for="categorySuggestions" id="categoryLabel">Category</label>
                                     <select class="categorySuggestions pure-input-2-3 ">
                                         {% for categoryLabel in categoryLabels%}
-                                            <option>{{ categoryLabel }}</option>
+                                            <option id='categoryLabelOpt' data-categoryLabel="{{ categoryLabel }}">{{ categoryLabel }}</option>
                                         {% endfor %}
                                     </select>
                                     <hr>

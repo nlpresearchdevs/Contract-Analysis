@@ -1,4 +1,5 @@
 $( document ).ready(function() {
+    
     // shows category and nature-party popover
     $(function () {
         $(".click[data-toggle=popover]").popover({
@@ -9,21 +10,42 @@ $( document ).ready(function() {
         });
     });
 
-    // on click button, hide suggestions pane
+
+    // on click suggestions pane close button, hide suggestions pane
     $("#suggestionsPaneCloseBtn").click(function () {
         $("#suggestions-popover-content").toggleClass('hide');
     });
 
+
+    // on click category close button, remove category from suggestions pane
     $('body').on('click', '#categoryBtnClose', function() {
-        // do something
         console.log($(this).parent());
         $(this).parent().remove();
     });
 
+
+    // on click nature-party close button, remove nature-party from suggestions pane
     $('body').on('click', '#naturePartyBtnClose', function() {
-        // do something
         console.log($(this).parent());
         $(this).parent().remove();
+    });
+
+
+    // on click selection from list of category suggestions, 
+    // add category as a closable button into suggestions pane
+    // $('body').on('click', '#categoryLabelOpt', function() {
+        $('#categorySuggestions').change(function() {
+        console.log("add categoryLabel");
+        $("<p class='categoryBtn'>" + $(this).next().attr("data-categoryLabel") + "<button type='button' id='categoryBtnClose' class='close' aria-label='Close'><span aria-hidden='true' style='font-size: 100%' >&times;</span></button></p>").insertAfter("#categoryLabel");
+    });
+    
+
+    // on click nature-party from list of nature-party suggestions, 
+    // add nature-party as a closable button into suggestions pane
+    // $('body').on('click', '#naturePartyLabelOpt', function() {
+        $('#naturePartySuggestions').change(function() {
+        console.log("add naturePartyLabel");
+        $("<p class='naturePartyBtn'>" + $(this).next().attr("data-naturePartyLabel") + "<button type='button' id='naturePartyBtnClose' class='close' aria-label='Close'><span aria-hidden='true' style='font-size: 100%' >&times;</span></button></p>").insertAfter("#naturePartyLabel");
     });
 
     // // on click button, remove category
@@ -51,7 +73,8 @@ $( document ).ready(function() {
     //     });
     // });
     
-    // closes popover upon clicking page body
+
+    // on click page body, close popover
     $(document).on("click", function (e) {
         $("[data-toggle='popover']").each(function () {
             //the 'is' for buttons that trigger popups
@@ -62,6 +85,8 @@ $( document ).ready(function() {
         });
     });
 
+
+    // on click suggestions anchor, show suggestions pane
     $(document).on("click", ".suggestions", function (e) {
         // $(".suggestions").on("click", function(e) {
             // console.log("prev: " + $(this).prev().html());
@@ -129,7 +154,8 @@ $( document ).ready(function() {
         // });
     });    
 
-    // checks if jquery loaded
+
+    // on load, check if jquery is loaded
     window.onload = function() {
         if (window.jQuery) {  
             // jQuery is loaded  
@@ -153,8 +179,9 @@ $( document ).ready(function() {
     //         }
     //     });
     // });
+    
 
-    // highlights text element based on category and nature-party
+    // on click filter pane checkbox, highlight category and/or nature party
     $(function () {
         $(".filterPaneCheckBox").on("click", function(e) {
             var $lis = $(".click"),

@@ -10,7 +10,7 @@ import traceback
 import PyPDF2, json, os
 import csv
 
-# NLC service credentialsc
+# NLC service credentials
 natural_language_understanding = NaturalLanguageUnderstandingV1(
     version=str(date.today()),
     iam_apikey='0w1akurVaCODOeW8hwzb99RD5mLrIGCAEjCZLwilohOO',
